@@ -1,0 +1,19 @@
+.footer{
+background: #16473c;
+color:white;
+width:100%;
+}
+
+.footer-top{
+max-width:1200px;
+margin:auto;
+padding:40px 5%;
+display:flex;
+justify-content:space-between;
+}
+
+.footer-bottom{
+text-align:center;
+padding:20px 5%;
+border-top:1px solid #444;
+}
