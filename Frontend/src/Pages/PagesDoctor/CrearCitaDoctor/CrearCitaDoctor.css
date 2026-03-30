@@ -1,0 +1,179 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f0fdf4;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  color: #166534;
+  margin-bottom: 20px;
+}
+
+.top-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.calendar {
+  flex: 3;
+  min-width: 250px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.formulario {
+  flex: 1;
+  min-width: 250px;
+  background: #dcfce7;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario input,
+.formulario select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #86efac;
+  font-size: 14px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-buttons button {
+  flex: 1;
+  background: #16a34a;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.form-buttons button:hover {
+  background: #15803d;
+}
+
+.form-buttons button:last-child {
+  background: #6b7280;
+}
+
+.form-buttons button:last-child:hover {
+  background: #4b5563;
+}
+
+.bottom-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background: #f0fdf4;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid #bbf7d0;
+}
+
+.card h3 {
+  color: #14532d;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.card p {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.pendiente { color: #f59e0b; }
+.confirmada { color: #22c55e; }
+.completada { color: #3b82f6; }
+.cancelada { color: #6b7280; }
+
+.dot.pendiente { background: #f59e0b; }
+.dot.confirmada { background: #22c55e; }
+.dot.completada { background: #3b82f6; }
+.dot.cancelada { background: #6b7280; }
+
+.cita-item {
+  background: white;
+  padding: 10px;
+  margin-top: 8px;
+  border-left: 5px solid #16a34a;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cita-item strong {
+  font-size: 0.9rem;
+}
+
+.cita-item span {
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.cita-item small {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.vacio {
+  text-align: center;
+  color: #6b7280;
+  padding: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .top-row {
+    flex-direction: column;
+  }
+  .bottom-cards {
+    flex-direction: column;
+  }
+  .calendar, .formulario, .card {
+    width: 100%;
+  }
+}

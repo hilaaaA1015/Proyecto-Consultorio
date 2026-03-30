@@ -6,12 +6,9 @@ import "./layoutpasiente.css"
 export default function LayoutPasiente() {
   return (
     <div>
-      <HeaderPasiente />
-
       <div className="container" style={{ marginTop: "120px" }}>
         <Outlet />
       </div>
-
     </div>
   );
 }

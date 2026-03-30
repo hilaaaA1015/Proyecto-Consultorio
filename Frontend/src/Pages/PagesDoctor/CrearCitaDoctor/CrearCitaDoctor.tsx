@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import { format, parse, startOfWeek, getDay, addMinutes } from 'date-fns';
+import { format, parse, startOfWeek, getDay, addMinutes, isBefore, isWeekend } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './crearcita.css';
+import './CrearCitaDoctor.css';
 
-const locales = { 'es': es };
+const locales = { es };
 
 const localizer = dateFnsLocalizer({
   format,
@@ -15,7 +15,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-// 🔥 HORARIOS FIJOS
+// 🔥 TURNOS FIJOS (45 min = 35 consulta + 10 descanso)
 const HORARIOS = [
   "08:00",
   "08:45",
@@ -26,14 +26,19 @@ const HORARIOS = [
   "12:30"
 ];
 
+type EstadoCita = 'Pendiente' | 'Confirmada' | 'Completada' | 'Cancelada';
+
 interface Cita {
   id: string;
   title: string;
   start: Date;
   end: Date;
+  paciente: string;
+  servicio: string;
+  estado: EstadoCita;
 }
 
-const CrearCitaPaciente: React.FC = () => {
+const CrearCitaDoctor: React.FC = () => {
 
   const [citas, setCitas] = useState<Cita[]>([]);
   const [fechaActual, setFechaActual] = useState(new Date());
@@ -46,13 +51,12 @@ const CrearCitaPaciente: React.FC = () => {
     horaFin: '',
   });
 
-  // 🔥 CLICK EN CALENDARIO
+  // 📅 CLICK CALENDARIO
   const handleSelectSlot = ({ start }: { start: Date; end: Date }) => {
     const inicio = new Date(start);
 
-    const dia = inicio.getDay();
-    if (dia === 0 || dia === 6) {
-      alert("No se puede agendar fines de semana");
+    if (isWeekend(inicio)) {
+      alert("El doctor no trabaja fines de semana");
       return;
     }
 
@@ -65,51 +69,51 @@ const CrearCitaPaciente: React.FC = () => {
   const agregarCita = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!nuevaCita.fecha || !nuevaCita.horaInicio) {
+      alert("Completa los datos");
+      return;
+    }
+
     const start = new Date(`${nuevaCita.fecha}T${nuevaCita.horaInicio}`);
     const end = addMinutes(start, 35);
 
-    const ahora = new Date();
-
     // 🚫 pasado
-    if (start < ahora) {
+    if (isBefore(start, new Date())) {
       alert("No puedes agendar en el pasado");
       return;
     }
 
     // 🚫 fines de semana
-    const dia = start.getDay();
-    if (dia === 0 || dia === 6) {
+    if (isWeekend(start)) {
       alert("Solo lunes a viernes");
       return;
     }
 
-    // 🚫 validar horario fijo
+    // 🚫 validar turno fijo
     if (!HORARIOS.includes(nuevaCita.horaInicio)) {
       alert("Selecciona un horario válido");
       return;
     }
 
-    // 🚫 EVITAR CHOQUES
-    const existe = citas.find(cita => {
-  return (
-    format(cita.start, 'yyyy-MM-dd') === nuevaCita.fecha &&
-    format(cita.start, 'HH:mm') === nuevaCita.horaInicio
-  );
-});
+    // 🚫 evitar choque
+    const existe = citas.find(cita =>
+      format(cita.start, 'yyyy-MM-dd') === nuevaCita.fecha &&
+      format(cita.start, 'HH:mm') === nuevaCita.horaInicio
+    );
 
-if (existe) {
-  alert(
-    `⚠️ Ya existe una cita en ese horario (${format(existe.start, 'HH:mm')}).
-Por favor selecciona otro turno disponible.`
-  );
-  return;
-}
+    if (existe) {
+      alert(`⚠️ Ya hay una cita a las ${format(existe.start, 'HH:mm')}`);
+      return;
+    }
 
     const nueva: Cita = {
       id: Date.now().toString(),
-      title: `${nuevaCita.servicio}`,
+      title: `${nuevaCita.paciente} - ${nuevaCita.servicio}`,
       start,
       end,
+      paciente: nuevaCita.paciente,
+      servicio: nuevaCita.servicio,
+      estado: 'Pendiente',
     };
 
     setCitas([...citas, nueva]);
@@ -123,6 +127,17 @@ Por favor selecciona otro turno disponible.`
     });
   };
 
+  const stats = {
+    hoy: citas.filter(c => format(c.start, 'yyyy-MM-dd') === format(fechaActual, 'yyyy-MM-dd')).length,
+    pendientes: citas.filter(c => c.estado === 'Pendiente').length,
+    confirmadas: citas.filter(c => c.estado === 'Confirmada').length,
+    completadas: citas.filter(c => c.estado === 'Completada').length,
+  };
+
+  const citasDelDia = citas.filter(c =>
+    format(c.start, 'yyyy-MM-dd') === format(fechaActual, 'yyyy-MM-dd')
+  );
+
   const eventStyleGetter = () => ({
     style: {
       backgroundColor: '#16a34a',
@@ -132,12 +147,11 @@ Por favor selecciona otro turno disponible.`
     },
   });
 
-
   return (
-    <div className="container" style={{ marginTop: "20px" }}>
-      <h1>Agendar Cita</h1>
+    <div className="container">
+      <h1>Agenda Médica</h1>
 
-      <div className="layout">
+      <div className="top-row">
 
         {/* 📅 CALENDARIO */}
         <div className="calendar">
@@ -177,7 +191,7 @@ Por favor selecciona otro turno disponible.`
           <form onSubmit={agregarCita}>
             <input
               type="text"
-              placeholder="Nombre"
+              placeholder="Paciente"
               value={nuevaCita.paciente}
               onChange={(e) => setNuevaCita({...nuevaCita, paciente: e.target.value})}
               required
@@ -201,7 +215,7 @@ Por favor selecciona otro turno disponible.`
               readOnly
             />
 
-            {/* 🔥 SELECT DE HORAS FIJAS */}
+            {/* 🔥 HORARIOS FIJOS */}
             <select
               value={nuevaCita.horaInicio}
               onChange={(e) => {
@@ -229,8 +243,43 @@ Por favor selecciona otro turno disponible.`
 
             <input type="time" value={nuevaCita.horaFin} readOnly />
 
-            <button type="submit">Agendar</button>
+            <div className="form-buttons">
+              <button type="submit">Agendar</button>
+              <button type="button" onClick={() =>
+                setNuevaCita({ paciente:'', servicio:'', fecha:'', horaInicio:'', horaFin:'' })
+              }>
+                Limpiar
+              </button>
+            </div>
           </form>
+        </div>
+
+      </div>
+
+      {/* 📊 ESTADÍSTICAS */}
+      <div className="bottom-cards">
+
+        <div className="card">
+          <h3>Estadísticas</h3>
+          <p>Citas hoy <span>{stats.hoy}</span></p>
+          <p>Pendientes <span>{stats.pendientes}</span></p>
+          <p>Confirmadas <span>{stats.confirmadas}</span></p>
+          <p>Completadas <span>{stats.completadas}</span></p>
+        </div>
+
+        <div className="card">
+          <h3>Citas del día</h3>
+          {citasDelDia.length === 0 ? (
+            <p>No hay citas</p>
+          ) : (
+            citasDelDia.map(cita => (
+              <div key={cita.id}>
+                <strong>{cita.paciente}</strong>
+                <p>{cita.servicio}</p>
+                <small>{format(cita.start, 'HH:mm')} - {format(cita.end, 'HH:mm')}</small>
+              </div>
+            ))
+          )}
         </div>
 
       </div>
@@ -238,4 +287,4 @@ Por favor selecciona otro turno disponible.`
   );
 };
 
-export default CrearCitaPaciente;
+export default CrearCitaDoctor;

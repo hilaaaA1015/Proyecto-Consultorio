@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import HeaderDoctor from "../../ComponentsInternos/ComponentsDoctor/header/headerdoctor";
 import "./layoutdoctor.css"
 export default function LayoutDoctor() {
@@ -105,7 +106,8 @@ export default function LayoutDoctor() {
                             <button>📞 Llamar secretario</button>
                         </div>
                     </div>
-
+                 {/* 🔹 AQUI ESTA LO QUE AGREGO HILARY */}
+                  <Outlet />
                 </div>
             </div>
         </>
