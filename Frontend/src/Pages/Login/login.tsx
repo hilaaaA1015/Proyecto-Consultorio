@@ -91,7 +91,7 @@ const navigate = useNavigate();
 
         {/* OPCIONES */}
         <div className="login__links">
-          <Link to="/forgot">¿Olvidaste tu contraseña?</Link>
+          <Link to="/cambiar-contraseña">¿Olvidaste tu contraseña?</Link>
           <Link to="/crearusuariopasientevista">Crear una cuenta</Link>
         </div>
       </div>
