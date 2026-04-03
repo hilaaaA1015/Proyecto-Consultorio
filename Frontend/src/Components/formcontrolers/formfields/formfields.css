@@ -20,3 +20,26 @@
 form {
   padding: 40px;
 }
+
+.form-group {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100%;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Inputs normales */
+.form-group input {
+  width: 100%;
+}
+
+/* Componentes de RSuite (MUY IMPORTANTE) */
+.rs-picker,
+.rs-picker-toggle {
+  width: 100% !important;
+}

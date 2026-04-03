@@ -18,7 +18,7 @@ export default function HomePasiente() {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <h1>¡Bienvenid@, Hilary! 👋</h1>
+        <h1>¡Bienvenido, Axel! 👋</h1>
         <p style={styles.subtitle}>Esto es lo que sucede con tu salud hoy.</p>
       </header>
 
