@@ -1,99 +1,50 @@
-/* crearcita.css */
-
-/* Contenedor principal para centrar el formulario */
-form {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Espacio entre cada FormController */
+.container {
+  padding: 20px;
+  font-family: Arial;
+  background: #f0fdf4;
 }
 
-/* Estilo específico para el título del formulario */
-form h2 {
-    color: black; /* Un azul más oscuro y profesional */
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 25px; /* Espacio generoso antes del primer input */
-    position: relative;
-    padding-bottom: 10px;
+h1 {
+  text-align: center;
+  color: #166534;
 }
 
-/* Una pequeña línea decorativa debajo del título (opcional, se ve muy bien) */
-form h2::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 3px;
-    background-color: #0ea37f;
-    border-radius: 2px;
+.layout {
+  display: flex;
+  gap: 20px;
 }
 
-/* Ajuste adicional para que el primer FormController no esté tan pegado */
-form .rs-form-group:first-of-type {
-    margin-top: 10px;
+.calendar {
+  flex: 3;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
 }
 
-/* Estilo para las etiquetas (Labels) */
-/* Asumiendo que FormController renderiza un label */
-form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #4a5568;
-    text-transform: capitalize;
-    font-size: 0.9rem;
+.formulario {
+  flex: 1;
+  background: #dcfce7;
+  padding: 20px;
+  border-radius: 12px;
 }
 
-/* Ajustes para los componentes de RSuite (DatePicker y TimePicker) */
-/* Hacemos que ocupen el 100% del ancho del contenedor */
-.rs-picker-date, 
-.rs-picker-time,
-.rs-input {
-    width: 100% !important;
+.formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Estilo para el botón de enviar */
-button[type="submit"] {
-    margin-top: 10px;
-    background-color: #0ea37f !important;
-    color: white !important;
-    padding: 12px !important;
-    font-size: 1rem !important;
-    font-weight: bold !important;
-    border-radius: 8px !important;
-    transition: background-color 0.3s ease, transform 0.1s active !important;
-    border: none;
+.formulario input,
+.formulario select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #86efac;
 }
 
-button[type="submit"]:hover {
-    background-color: #0d9273 !important;
-    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
-}
-
-button[type="submit"]:active {
-    transform: scale(0.98);
-}
-
-/* Estilo para cuando hay errores (si tu FormController los maneja) */
-.error-message {
-    color: #d32f2f;
-    font-size: 0.8rem;
-    margin-top: 4px;
-}
-
-/* Responsividad */
-@media (max-width: 600px) {
-    form {
-        margin: 20px;
-        padding: 20px;
-    }
+button {
+  background: #16a34a;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
 }

@@ -30,6 +30,8 @@ import CrearCita from "../Pages/PagesPasiente/Crearcita/crearcita";
 /** importaciones de doctor */
 import HomeDoctor from "../Pages/PagesDoctor/homedoctor";
 
+import CrearCitaDoctor from "../Pages/PagesDoctor/CrearCitaDoctor/CrearCitaDoctor";
+
 
 /** importaciones de administrador */
 import HomeAdministrador from "../Pages/PagesAdmin/homeadministrador";
@@ -37,7 +39,12 @@ import HomeAdministrador from "../Pages/PagesAdmin/homeadministrador";
 /** importaciones de secretaria */
 import HomeSecretaria from "../Pages/PagesSecretaria/homesecretaria";
 
+import CambiarContra from '../Pages/CambiarContra/CambiarContra';
+
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 export default function AppRouter() {
+
 return(
 <BrowserRouter>
 <Routes >
@@ -49,8 +56,9 @@ return(
 
 <Route path="/about" element={<AcercaNosotros></AcercaNosotros>}></Route>
 <Route path="/contactos" element={<Contactos></Contactos>}></Route>
-
+ 
 </Route>
+
 
 {/* en este route se guarda todas las rutas de las vistas internas */}
 
@@ -58,7 +66,7 @@ return(
 
 <Route path="/login" element={<Login></Login> }></Route>
 <Route path="/crearusuariopasientevista" element={<CrearUsuarioNuevoVistaPasiente></CrearUsuarioNuevoVistaPasiente>}></Route>
-
+<Route path="/cambiar-contraseña" element={<CambiarContra />} />
 </Route>
 
 <Route element={<LayoutPasiente></LayoutPasiente>}>
@@ -71,6 +79,7 @@ return(
 <Route element={<LayoutDoctor></LayoutDoctor>}>
 
 <Route path="/homedoctor" element={<HomeDoctor></HomeDoctor>}></Route>
+<Route path="/crearcitadoctor" element={<CrearCitaDoctor></CrearCitaDoctor>}></Route>
 
 </Route >
 
