@@ -7,19 +7,17 @@ export default function HeaderPasiente() {
   return (
     <header className="header">
 
-      <div className="header__left">
-        <img
-          src="/imagenes/Regina-04(este_es) 2.png"
-          alt="Logo consultorio"
-          className="header__logo"
-        />
-        <span className="header__title">
-          Consultorio Médico General
-        </span>
-      </div>
+      <Link to="/homepasiente" className="header__left">
+              <img
+                src="/imagenes/Regina-04(este_es) 2.png"
+                alt="Logo consultorio"
+                className="header__logo"
+              />
+              <span className="header__title">Consultorio Médico General</span>
+            </Link>
 
       <nav className="header__nav">
-        <Link to="/about">Acerca de nosotros</Link>
+        <Link to="/crearcita">Calendario</Link>
 
         <div className="header__dropdown">
           <button className="dropdown__btn">
@@ -27,7 +25,6 @@ export default function HeaderPasiente() {
           </button>
 
           <div className="dropdown__menu">
-            <Link to="/servicio">Consulta General</Link>
             <Link to="/crearcita">Agendar cita</Link>
           </div>
         </div>

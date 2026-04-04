@@ -31,8 +31,9 @@ import CrearCita from "../Pages/PagesPasiente/Crearcita/crearcita";
 import HomeDoctor from "../Pages/PagesDoctor/homedoctor";
 
 import CrearCitaDoctor from "../Pages/PagesDoctor/CrearCitaDoctor/CrearCitaDoctor";
-
-
+import {PacientesList} from "../Pages/PagesDoctor/VerPacientesDoctor/VerPacientesDoctor";
+import {PacienteDetalle} from "../Pages/PagesDoctor/VerDetallesPaciente/VerDetallesPaciente";
+import {PerfilDoctor} from "../Pages/PagesDoctor/PerfilDoctor/PerfilDoctor";
 /** importaciones de administrador */
 import HomeAdministrador from "../Pages/PagesAdmin/homeadministrador";
 
@@ -42,6 +43,7 @@ import HomeSecretaria from "../Pages/PagesSecretaria/homesecretaria";
 import CambiarContra from '../Pages/CambiarContra/CambiarContra';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import CalendarioDoctor from "../Pages/PagesDoctor/CalendarioDoctor/CalendarioDoctor";
 
 export default function AppRouter() {
 
@@ -80,6 +82,10 @@ return(
 
 <Route path="/homedoctor" element={<HomeDoctor></HomeDoctor>}></Route>
 <Route path="/crearcitadoctor" element={<CrearCitaDoctor></CrearCitaDoctor>}></Route>
+<Route path="/calendariodoctor" element={<CalendarioDoctor></CalendarioDoctor>}></Route>
+<Route path="/verlistapacientes" element={<PacientesList></PacientesList>}></Route>
+<Route path="/detallepaciente" element={<PacienteDetalle></PacienteDetalle>}></Route>
+<Route path="/verperfildoctor" element={<PerfilDoctor></PerfilDoctor>}></Route>
 
 </Route >
 

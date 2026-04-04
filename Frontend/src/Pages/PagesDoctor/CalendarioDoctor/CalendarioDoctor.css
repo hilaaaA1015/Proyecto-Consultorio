@@ -1,0 +1,114 @@
+.calendario-container {
+    max-width: 1800px;
+    margin: 0 auto;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.titulo {
+    margin-bottom: 15px;
+    color: #0ea37f;
+    font-weight: bold;
+}
+
+/* Toolbar */
+.rbc-toolbar button {
+    color: #0ea37f;
+    border-radius: 6px;
+}
+
+.rbc-toolbar button.rbc-active {
+    background-color: #0ea37f;
+    color: white;
+}
+
+/* Eventos */
+.rbc-event {
+    border-radius: 8px !important;
+}
+
+/* Hover */
+.rbc-event:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+
+/* ESTILOS DEL MODAL */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Caja del modal */
+.modal {
+    background: white;
+    width: 100%;
+    max-width: 350px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #0ea37f;
+    padding-bottom: 10px;
+}
+
+.modal p {
+    margin: 12px 0;
+    color: #546e7a;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.modal p strong {
+    color: #2c3e50;
+    width: 100px;
+    display: inline-block;
+}
+
+/* Botón */
+.modal button {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 12px;
+    border: none;
+    background-color: #0ea37f;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal button:hover {
+    background-color: #0c8f6d;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -2,10 +2,13 @@
 Sistema de gestión para consultorio médico.
 
 ## Tecnologías
+### Frontend
 - Node.js
-- Next.js
-- PostgreSQL
+### Backend
+- Express 
 - Prisma
+### Base de datos
+- PostgreSQL
 
 ## Instalaciones
 

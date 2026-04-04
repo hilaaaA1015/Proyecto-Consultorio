@@ -6,20 +6,20 @@ export default function HeaderDoctor() {
   return (
     <header className="header">
       {/* LOGO + TÍTULO */}
-      <div className="header__left">
+      <Link to="/homedoctor" className="header__left">
         <img
           src="/imagenes/Regina-04(este_es) 2.png"
           alt="Logo consultorio"
           className="header__logo"
         />
         <span className="header__title">Consultorio Médico General</span>
-      </div>
+      </Link>
 
       {/* MENÚ */}
       <nav className="header__nav">
-        <Link to="/about">Calendario</Link>
-        <Link to="/contactos">Pacientes</Link>
-        <Link to="/notificaciones"> Mi Perfil</Link>
+        <Link to="/calendariodoctor">Calendario</Link>
+        <Link to="/verlistapacientes">Pacientes</Link>
+        <Link to="/verperfildoctor"> Mi Perfil</Link>
       </nav>
 
       {/* BOTÓN */}

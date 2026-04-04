@@ -1,0 +1,166 @@
+.profile-dashboard {
+  display: grid;
+  grid-template-columns: 320px 1fr; /* Columna fija para sidebar y el resto para contenido */
+  gap: 25px;
+  padding: 30px;
+  max-width: 1600px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+}
+
+.security-card .security-text {
+  font-size: 1rem !important; /* El !important es el último recurso, prueba primero sin él */           /* Negro puro */
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 1.4;
+  text-decoration: none;       /* Por si acaso hay un tachado heredado */
+  display: block;              /* Asegura que se comporte como bloque */
+}
+
+/* Estilo común de las Tarjetas (Cards) */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+/* Sidebar Estilos */
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar-card {
+  text-align: center;
+  border-top: 4px solid #0ea37f;
+}
+
+.profile-avatar-big {
+  width: 100px;
+  height: 100px;
+  background-color: #0ea37f;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0 auto 15px;
+}
+
+.specialty-label {
+  color: #0ea37f;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: #e6f6f2;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* Botones del Sidebar */
+.sidebar-actions {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-primary-alt {
+  background: #0ea37f;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-password-link {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #0ea37f;
+  background: transparent;
+  color: #0ea37f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.btn-password-link:hover {
+  background: #0ea37f;
+  color: white;
+}
+
+
+/* Contenido Principal (Derecha) */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #374151;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 20px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.input-group input {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.input-group input:disabled {
+  background-color: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #374151;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #0ea37f;
+  box-shadow: 0 0 0 3px rgba(14, 163, 127, 0.1);
+}
+
+/* Ajuste Responsivo */
+@media (max-width: 1000px) {
+  .profile-dashboard {
+    grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+  }
+}
