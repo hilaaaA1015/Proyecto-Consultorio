@@ -35,7 +35,6 @@ export default function HomePasiente() {
 
         const data = await res.json();
         setUser(data.user);
-        console.log("Respuesta perfil:", data);
       } catch (error) {
         console.error("Error al obtener perfil:", error);
       }
@@ -43,42 +42,6 @@ export default function HomePasiente() {
 
     fetchPerfil();
   }, [navigate]);
-
-  // 📅 (Opcional) traer citas reales
-  // useEffect(() => {
-  //   const fetchCitas = async () => {
-  //     const token = localStorage.getItem("token");
-
-  //     try {
-  //       const res = await fetch("http://localhost:4000/api/citas/mis-citas", {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const data = await res.json();
-  //       console.log("Respuesta perfil:", data);
-  //       // ⚠️ Ajusta esto según tu backend real
-  //       setProximasCitas(data || []);
-  //     } catch (error) {
-  //       console.error("Error al obtener citas:", error);
-
-  //       // fallback (temporal)
-  //       setProximasCitas([
-  //         {
-  //           id: 1,
-  //           doctor: "Dr. Henry",
-  //           especialidad: "Médico General",
-  //           fecha: "2025-03-20",
-  //           hora: "10:30 AM",
-  //         },
-  //       ]);
-  //     }
-  //   };
-
-  //   fetchCitas();
-  // }, []);
-  
 
   return (
     <div className="home-container">
