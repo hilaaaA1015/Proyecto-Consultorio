@@ -1,42 +1,47 @@
 import { prisma } from "../services/prisma";
-import { feistelEncrypt } from "../utils/feistel";
-import { caesarEncrypt } from "../utils/caesar";
-import { LoginInput } from "../schemas/Auth.schema";
+import { encryptPassword } from "../utils/encryptPassword";
+import jwt from "jsonwebtoken";
+import { ENV } from "../config/env";
 
-export class AuthService {
-  static async login(data: LoginInput) {
-    const { username, password } = data;
+export const loginService = async (data: any) => {
 
-    // Buscar usuario
-    const user = await prisma.usuario.findFirst({
-      where: {
-        nombre: username,  
-      },
-      include: {
-        paciente: true, 
-      },
-    });
+  // 🔍 1. Buscar usuario
+  const user = await prisma.usuario.findUnique({
+    where: {
+      nomperfil: data.UsuarioPasiente,
+    },
+  });
 
-    if (!user) {
-      throw new Error("Usuario o contraseña incorrectos");
-    }
-
-    // Verificar contraseña
-    const key = process.env.FEISTEL_KEY || "dev_key";
-    const encryptedInput = feistelEncrypt(password, key);
-
-    const caesarShift = Number(process.env.CAESAR_SHIFT ?? "3");
-    const finalInput = caesarEncrypt(encryptedInput, caesarShift);
-
-    if (finalInput !== user.contrasena) {
-      throw new Error("Usuario o contraseña incorrectos");
-    }
-
-    return {
-      id_usuario: user.id_usuario,
-      nombre_usuario: user.nombre,
-      rol: user.rol,
-      paciente: user.paciente,
-    };
+  if (!user) {
+    throw new Error("Usuario no existe");
   }
-}
+
+  // 🔐 2. Cifrar password ingresada
+  const encrypted = encryptPassword(data.password);
+
+  // ⚖️ 3. Comparar
+  if (encrypted !== user.password_hash) {
+    throw new Error("Contraseña incorrecta");
+  }
+
+  // 🎟️ 4. Generar JWT
+  const token = jwt.sign(
+    {
+      id: user.id_usuario,
+      rol: user.rol,
+    },
+    ENV.ENCRYPT_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
+
+  return {
+    token,
+    user: {
+      id: user.id_usuario,
+      rol: user.rol,
+      username: user.nomperfil,
+    },
+  };
+};

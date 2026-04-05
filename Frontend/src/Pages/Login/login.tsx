@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,22 +22,23 @@ const navigate = useNavigate();
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username, // se mapea a usuario.nombre
+          UsuarioPasiente: username,
           password,
         }),
       });
 
       const data = await res.json();
-      console.log("Respuesta login:", data);
-      console.log("ROL crudo recibido:", data.user?.rol);
-      const rawRole = data.user?.rol ?? "";
-      const role = String(rawRole).trim().toLowerCase();
-      console.log("ROL normalizado:", role);
 
-      if (!res.ok || !data.ok) {
+      if (!res.ok) {
         setError(data.message || "Usuario o contraseña incorrectos");
         return;
       }
+      // 🔐 GUARDAR TOKEN
+      localStorage.setItem("token", data.token);
+      // 🔐 GUARDAR USUARIO
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      const role = String(data.user?.rol ?? "").trim().toLowerCase();
 
       // Redirección según rol
       if (role === "paciente") {
@@ -51,7 +52,7 @@ const navigate = useNavigate();
       } else {
         navigate("/");
       }
-      
+
     } catch (err) {
       console.error("Error de red al hacer login:", err);
       setError("No se pudo conectar con el servidor");

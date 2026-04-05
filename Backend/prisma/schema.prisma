@@ -7,216 +7,346 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model administrador {
-  id_admin        Int       @id @default(autoincrement())
-  nombre          String    @db.VarChar(50)
-  segundonombre   String?   @db.VarChar(50)
-  primerapellido  String    @db.VarChar(50)
-  segundoapellido String?   @db.VarChar(50)
-  nacimiento      DateTime? @db.Date
-  celular         String?   @db.VarChar(15)
-  telefono        String?   @db.VarChar(15)
-  id_usuario      Int?
-  fechaingreso    DateTime? @db.Date
-  usuario         usuario?  @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model cita {
-  id_cita      Int        @id @default(autoincrement())
-  fecha        DateTime   @db.Date
-  horainicio   DateTime?  @db.Time(6)
-  horafin      DateTime?  @db.Time(6)
-  estado       String?    @db.VarChar(20)
-  motivo       String?
-  id_doctor    Int?
-  id_paciente  Int?
-  hora_llegada DateTime?  @db.Time(6)
-  doctor       doctor?    @relation(fields: [id_doctor], references: [id_doctor], onDelete: NoAction, onUpdate: NoAction)
-  paciente     paciente?  @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
-  consulta     consulta[]
+  id_cita     Int       @id @default(autoincrement())
+  id_paciente Int
+  id_doctor   Int
+  fecha       DateTime  @db.Date
+  hora        DateTime  @db.Time(6)
+  estado      String?   @default("Pendiente") @db.VarChar(30)
+  motivo      String?
+  doctor      doctor    @relation(fields: [id_doctor], references: [id_usuario], onUpdate: NoAction)
+  paciente    paciente  @relation(fields: [id_paciente], references: [id_usuario], onUpdate: NoAction)
+  consulta    consulta?
+  pago        pago[]
+
+  @@unique([id_doctor, fecha, hora])
+  @@index([id_doctor], map: "idx_cita_doctor")
+  @@index([fecha], map: "idx_cita_fecha")
+  @@index([id_paciente], map: "idx_cita_paciente")
 }
 
 model consulta {
-  id_consulta Int           @id @default(autoincrement())
-  fecha       DateTime?     @db.Date
-  motivo      String?
-  id_cita     Int?
-  cita        cita?         @relation(fields: [id_cita], references: [id_cita], onDelete: NoAction, onUpdate: NoAction)
-  diagnostico diagnostico[]
-}
+  id_consulta    Int           @id @default(autoincrement())
+  id_cita        Int           @unique
+  observaciones  String?
+  fecha_registro DateTime?     @default(now()) @db.Timestamp(6)
+  cita           cita          @relation(fields: [id_cita], references: [id_cita], onDelete: Cascade, onUpdate: NoAction)
+  diagnostico    diagnostico[]
 
-model detallepago {
-  id_detalle_pago  Int       @id @default(autoincrement())
-  fechapago        DateTime? @db.Date
-  id_transaccionpp Int?
+  @@index([id_cita], map: "idx_consulta_cita")
 }
 
 model diagnostico {
-  id_diagnostico    Int           @id @default(autoincrement())
-  nombrediagnostico String?       @db.VarChar(80)
-  descripcion       String?
-  id_consulta       Int?
-  consulta          consulta?     @relation(fields: [id_consulta], references: [id_consulta], onDelete: NoAction, onUpdate: NoAction)
-  tratamiento       tratamiento[]
+  id_diagnostico   Int               @id @default(autoincrement())
+  id_consulta      Int
+  nombre           String            @db.VarChar(150)
+  id_tipo          Int?
+  id_gravedad      Int?
+  notas            String?
+  consulta         consulta          @relation(fields: [id_consulta], references: [id_consulta], onDelete: Cascade, onUpdate: NoAction)
+  gravedad         gravedad?         @relation(fields: [id_gravedad], references: [id_gravedad], onDelete: NoAction, onUpdate: NoAction)
+  tipo_diagnostico tipo_diagnostico? @relation(fields: [id_tipo], references: [id_tipo], onDelete: NoAction, onUpdate: NoAction)
+  orden_medica     orden_medica[]
+  tratamiento      tratamiento[]
+
+  @@index([id_consulta], map: "idx_diagnostico_consulta")
 }
 
 model doctor {
-  id_doctor           Int                   @id @default(autoincrement())
-  nombre              String                @db.VarChar(50)
-  segundonombre       String?               @db.VarChar(50)
-  primerapellido      String                @db.VarChar(50)
-  segundoapellido     String?               @db.VarChar(50)
-  nacimiento          DateTime?             @db.Date
-  id_usuario          Int?
-  fechacontratacion   DateTime?             @db.Date
-  salario             Float?
-  telefono            String?               @db.VarChar(8)
-  correo              String?               @db.VarChar(50)
-  id_especialidad     Int?
-  cita                cita[]
-  especialidad        especialidad?         @relation(fields: [id_especialidad], references: [id_especialidad], onDelete: NoAction, onUpdate: NoAction)
-  usuario             usuario?              @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
-  especialidad_doctor especialidad_doctor[]
-}
+  id_usuario   Int     @id
+  nombre       String  @db.VarChar(100)
+  apellido     String  @db.VarChar(100)
+  especialidad String? @db.VarChar(120)
+  telefono     String? @db.VarChar(20)
+  correo       String? @db.VarChar(150)
+  cita         cita[]
+  usuario      usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 
-model especialidad {
-  id_especialidad     Int                   @id @default(autoincrement())
-  nombreespecialidad  String?               @db.VarChar(60)
-  descripcion         String?
-  doctor              doctor[]
-  especialidad_doctor especialidad_doctor[]
-}
-
-model especialidad_doctor {
-  id_especialidad_doctor Int           @id @default(autoincrement())
-  id_doctor              Int?
-  id_especialidad        Int?
-  doctor                 doctor?       @relation(fields: [id_doctor], references: [id_doctor], onDelete: NoAction, onUpdate: NoAction)
-  especialidad           especialidad? @relation(fields: [id_especialidad], references: [id_especialidad], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model examen {
-  id_examen   Int       @id @default(autoincrement())
-  tipoexamen  String?   @db.VarChar(30)
-  rutaExamen  String?   @db.VarChar(50)
-  id_paciente Int?
-  paciente    paciente? @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
+  @@index([correo], map: "idx_doctor_correo")
 }
 
 model medicamento {
-  id_medicamento Int        @id @default(autoincrement())
-  nombre         String?    @db.VarChar(80)
-  tipo           String?    @db.VarChar(40)
-  descripcion    String?
-  id_proveedor   Int?
-  proveedor      proveedor? @relation(fields: [id_proveedor], references: [id_proveedor], onDelete: NoAction, onUpdate: NoAction)
+  id_medicamento          Int                       @id @default(autoincrement())
+  nombre                  String                    @db.VarChar(150)
+  nombre_generico         String?                   @db.VarChar(150)
+  concentracion           String?                   @db.VarChar(100)
+  forma_farmaceutica      String?                   @db.VarChar(100)
+  via_administracion      String?                   @db.VarChar(100)
+  fabricante              String?                   @db.VarChar(150)
+  descripcion             String?
+  activo                  Boolean?                  @default(true)
+  posologia_medicamento   posologia_medicamento[]
+  tratamiento_medicamento tratamiento_medicamento[]
+
+  @@unique([nombre, concentracion, forma_farmaceutica])
 }
 
 model paciente {
-  id_paciente     Int       @id @default(autoincrement())
-  nombre          String    @db.VarChar(50)
-  segundonombre   String?   @db.VarChar(50)
-  primerapellido  String    @db.VarChar(50)
-  segundoapellido String?   @db.VarChar(50)
-  nacimiento      DateTime? @db.Date
-  id_usuario      Int?
-  altura          Float?
-  peso            Float?
-  sexo            String?   @db.Char(1)
-  tiposangre      String?   @db.VarChar(5)
-  telefono        String?   @db.VarChar(8)
-  correo          String?   @db.VarChar(50)
-  cita            cita[]
-  examen          examen[]
-  usuario         usuario?  @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
-  pago            pago[]
+  id_usuario                                    Int                             @id
+  nombre                                        String                          @db.VarChar(100)
+  segundo_nombre                                String?                         @db.VarChar(50)
+  primer_apellido                               String                          @db.VarChar(100)
+  segundo_apellido                              String?                         @db.VarChar(50)
+  nacimiento                                    DateTime?                       @db.Date
+  sexo                                          String?                         @db.Char(1)
+  telefono                                      String?                         @db.VarChar(20)
+  correo                                        String?                         @db.VarChar(150)
+  tipo_sangre                                   Int?
+  estatura_cm                                   Decimal?                        @db.Decimal(5, 2)
+  peso_kg                                       Decimal?                        @db.Decimal(5, 2)
+  imc                                           Decimal?                        @default(dbgenerated("(peso_kg / ((estatura_cm / (100)::numeric) * (estatura_cm / (100)::numeric)))")) @db.Decimal(4, 2)
+  presion_arterial                              String?                         @db.VarChar(20)
+  frecuencia_cardiaca                           Int?
+  frecuencia_respiratoria                       Int?
+  temperatura                                   Decimal?                        @db.Decimal(3, 1)
+  saturacion_oxigeno                            Int?
+  observaciones_generales                       String?
+  cita                                          cita[]
+  usuario                                       usuario                         @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+  tipo_sangre_paciente_tipo_sangreTotipo_sangre tipo_sangre?                    @relation("paciente_tipo_sangreTotipo_sangre", fields: [tipo_sangre], references: [id_tipo_sangre], onDelete: NoAction, onUpdate: NoAction)
+  paciente_alergia                              paciente_alergia[]
+  paciente_antecedente_familiar                 paciente_antecedente_familiar[]
+  paciente_antecedente_personal                 paciente_antecedente_personal[]
+  paciente_habito                               paciente_habito[]
+
+  @@index([correo], map: "idx_paciente_correo")
 }
 
 model pago {
-  id_pago     Int       @id @default(autoincrement())
-  id_paciente Int
-  tipopago    String    @db.VarChar(50)
-  monto       Float
-  fechapago   DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
-  paciente    paciente  @relation(fields: [id_paciente], references: [id_paciente], onDelete: Cascade, onUpdate: NoAction)
-}
+  id_pago       Int        @id @default(autoincrement())
+  id_cita       Int?
+  id_secretaria Int
+  monto         Decimal    @db.Decimal(12, 2)
+  fecha         DateTime?  @default(dbgenerated("CURRENT_DATE")) @db.Date
+  metodo        String?    @db.VarChar(40)
+  referencia    String?    @db.VarChar(80)
+  notas         String?
+  cita          cita?      @relation(fields: [id_cita], references: [id_cita], onUpdate: NoAction)
+  secretaria    secretaria @relation(fields: [id_secretaria], references: [id_usuario], onUpdate: NoAction)
 
-model prescripcion {
-  id_prescripcion  Int     @id @default(autoincrement())
-  dosisrecomendada String?
-  tipo             String? @db.VarChar(50)
-  frecuencia       String? @db.VarChar(50)
-  id_medicamento   Int?
-  id_receta        Int?
-  receta           receta? @relation(fields: [id_receta], references: [id_receta], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model proveedor {
-  id_proveedor    Int           @id @default(autoincrement())
-  nombre          String        @db.VarChar(50)
-  segundonombre   String?       @db.VarChar(50)
-  primerapellido  String?       @db.VarChar(50)
-  segundoapellido String?       @db.VarChar(50)
-  nacimiento      DateTime?     @db.Date
-  celular         String?       @db.VarChar(15)
-  telefono        String?       @db.VarChar(15)
-  id_direccion    Int?
-  id_usuario      Int?
-  tipoproveedor   String?       @db.VarChar(50)
-  estado          Boolean?
-  medicamento     medicamento[]
-  usuario         usuario?      @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model receta {
-  id_receta        Int            @id @default(autoincrement())
-  fechaemision     DateTime?      @db.Date
-  dosisrecomendada String?
-  id_tratamiento   Int?
-  prescripcion     prescripcion[]
-  tratamiento      tratamiento?   @relation(fields: [id_tratamiento], references: [id_tratamiento], onDelete: NoAction, onUpdate: NoAction)
+  @@index([id_cita], map: "idx_pago_cita")
 }
 
 model secretaria {
-  id_secretaria     Int       @id @default(autoincrement())
-  nombre            String    @db.VarChar(50)
-  segundonombre     String?   @db.VarChar(50)
-  primerapellido    String    @db.VarChar(50)
-  segundoapellido   String?   @db.VarChar(50)
-  nacimiento        DateTime? @db.Date
-  telefono          String?   @db.VarChar(15)
-  id_usuario        Int?
-  fechacontratacion DateTime? @db.Date
-  salario           Float?
-  correo            String?   @db.VarChar(50)
-  usuario           usuario?  @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
-}
+  id_usuario Int     @id
+  nombre     String  @db.VarChar(100)
+  apellido   String  @db.VarChar(100)
+  telefono   String? @db.VarChar(20)
+  correo     String? @db.VarChar(150)
+  pago       pago[]
+  usuario    usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 
-model telefono {
-  id_telefono Int     @id @default(autoincrement())
-  numero      String  @db.VarChar(15)
-  tipo        String? @db.VarChar(20)
+  @@index([correo], map: "idx_secretaria_correo")
 }
 
 model tratamiento {
-  id_tratamiento  Int          @id @default(autoincrement())
-  tipotratamiento String?      @db.VarChar(60)
-  descripcion     String?
-  duracion        String?      @db.VarChar(50)
-  frecuencia      String?      @db.VarChar(50)
-  id_diagnostico  Int?
-  receta          receta[]
-  diagnostico     diagnostico? @relation(fields: [id_diagnostico], references: [id_diagnostico], onDelete: NoAction, onUpdate: NoAction)
+  id_tratamiento          Int                       @id @default(autoincrement())
+  id_diagnostico          Int
+  id_tipo                 Int?
+  descripcion             String?
+  fecha_inicio            DateTime                  @db.Date
+  fecha_fin               DateTime?                 @db.Date
+  notas                   String?
+  diagnostico             diagnostico               @relation(fields: [id_diagnostico], references: [id_diagnostico], onDelete: Cascade, onUpdate: NoAction)
+  tipo_tratamiento        tipo_tratamiento?         @relation(fields: [id_tipo], references: [id_tipo], onDelete: NoAction, onUpdate: NoAction)
+  tratamiento_medicamento tratamiento_medicamento[]
+
+  @@index([id_diagnostico], map: "idx_tratamiento_diagnostico")
 }
 
 model usuario {
-  id_usuario    Int             @id @default(autoincrement())
-  nombre        String          @db.VarChar(50)
-  contrasena    String          @db.VarChar(100)
-  rol           String          @db.VarChar(30)
-  administrador administrador[]
-  doctor        doctor[]
-  paciente      paciente[]
-  proveedor     proveedor[]
-  secretaria    secretaria[]
+  id_usuario    Int          @id @default(autoincrement())
+  nomperfil     String       @unique @db.VarChar(100)
+  password_hash String
+  rol           String       @db.VarChar(20)
+  doctor        doctor?
+  paciente      paciente?
+  responsable   responsable?
+  secretaria    secretaria?
+
+  @@index([nomperfil], map: "idx_usuario_nomperfil")
+  @@index([rol], map: "idx_usuario_rol")
+}
+
+model alergia {
+  id_alergia       Int                @id @default(autoincrement())
+  nombre           String             @db.VarChar(100)
+  tipo             String?            @db.VarChar(50)
+  descripcion      String?
+  paciente_alergia paciente_alergia[]
+}
+
+model antecedente_familiar {
+  id_antecedente                Int                             @id @default(autoincrement())
+  nombre                        String                          @db.VarChar(100)
+  descripcion                   String?
+  paciente_antecedente_familiar paciente_antecedente_familiar[]
+}
+
+model antecedente_personal {
+  id_antecedente                Int                             @id @default(autoincrement())
+  nombre                        String                          @db.VarChar(100)
+  tipo                          String?                         @db.VarChar(50)
+  descripcion                   String?
+  paciente_antecedente_personal paciente_antecedente_personal[]
+}
+
+model frecuencia {
+  id_frecuencia         Int                     @id @default(autoincrement())
+  nombre                String                  @unique @db.VarChar(50)
+  descripcion           String?
+  horas_intervalo       Int?
+  posologia_medicamento posologia_medicamento[]
+}
+
+model gravedad {
+  id_gravedad Int           @id @default(autoincrement())
+  nivel       String        @unique @db.VarChar(50)
+  descripcion String?
+  diagnostico diagnostico[]
+}
+
+model habito {
+  id_habito       Int               @id @default(autoincrement())
+  nombre          String            @db.VarChar(50)
+  tipo            String?           @db.VarChar(50)
+  descripcion     String?
+  paciente_habito paciente_habito[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model orden_medica {
+  id_orden          Int         @id @default(autoincrement())
+  id_diagnostico    Int
+  id_tipo_orden     Int
+  descripcion       String?
+  estado            String?     @default("Pendiente") @db.VarChar(30)
+  fecha_solicitud   DateTime?   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  fecha_realizacion DateTime?   @db.Date
+  diagnostico       diagnostico @relation(fields: [id_diagnostico], references: [id_diagnostico], onDelete: Cascade, onUpdate: NoAction)
+  tipo_orden        tipo_orden  @relation(fields: [id_tipo_orden], references: [id_tipo_orden], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([id_diagnostico], map: "idx_orden_diagnostico")
+}
+
+model paciente_alergia {
+  id_paciente    Int
+  id_alergia     Int
+  gravedad       String?   @db.VarChar(20)
+  reaccion       String?
+  fecha_registro DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
+  alergia        alergia   @relation(fields: [id_alergia], references: [id_alergia], onDelete: Cascade, onUpdate: NoAction)
+  paciente       paciente  @relation(fields: [id_paciente], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_paciente, id_alergia])
+}
+
+model paciente_antecedente_familiar {
+  id_paciente          Int
+  id_antecedente       Int
+  parentesco           String               @db.VarChar(50)
+  estado               String?              @db.VarChar(30)
+  observaciones        String?
+  antecedente_familiar antecedente_familiar @relation(fields: [id_antecedente], references: [id_antecedente], onDelete: Cascade, onUpdate: NoAction)
+  paciente             paciente             @relation(fields: [id_paciente], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_paciente, id_antecedente, parentesco])
+}
+
+model paciente_antecedente_personal {
+  id_paciente          Int
+  id_antecedente       Int
+  fecha_diagnostico    DateTime?            @db.Date
+  estado               String?              @db.VarChar(30)
+  observaciones        String?
+  antecedente_personal antecedente_personal @relation(fields: [id_antecedente], references: [id_antecedente], onDelete: Cascade, onUpdate: NoAction)
+  paciente             paciente             @relation(fields: [id_paciente], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_paciente, id_antecedente])
+}
+
+model paciente_habito {
+  id_paciente   Int
+  id_habito     Int
+  frecuencia    String?  @db.VarChar(50)
+  cantidad      String?  @db.VarChar(50)
+  tiempo        String?  @db.VarChar(50)
+  observaciones String?
+  habito        habito   @relation(fields: [id_habito], references: [id_habito], onDelete: Cascade, onUpdate: NoAction)
+  paciente      paciente @relation(fields: [id_paciente], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_paciente, id_habito])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model posologia_medicamento {
+  id_posologia            Int                       @id @default(autoincrement())
+  id_medicamento          Int
+  edad_min                Int
+  edad_max                Int
+  dosis                   String                    @db.VarChar(120)
+  unidad                  String?                   @db.VarChar(30)
+  id_frecuencia           Int?
+  observaciones           String?
+  activo                  Boolean?                  @default(true)
+  frecuencia              frecuencia?               @relation(fields: [id_frecuencia], references: [id_frecuencia], onDelete: NoAction, onUpdate: NoAction)
+  medicamento             medicamento               @relation(fields: [id_medicamento], references: [id_medicamento], onDelete: NoAction, onUpdate: NoAction)
+  tratamiento_medicamento tratamiento_medicamento[]
+
+  @@unique([id_medicamento, edad_min, edad_max])
+}
+
+model responsable {
+  id_usuario       Int       @id
+  nombre           String    @db.VarChar(100)
+  apellido         String    @db.VarChar(100)
+  telefono         String?   @db.VarChar(20)
+  correo           String?   @db.VarChar(150)
+  fecha_nacimiento DateTime? @db.Date
+  parentesco       String?   @db.VarChar(40)
+  usuario          usuario   @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([correo], map: "idx_responsable_correo")
+}
+
+model tipo_diagnostico {
+  id_tipo     Int           @id @default(autoincrement())
+  nombre      String        @unique @db.VarChar(100)
+  descripcion String?
+  diagnostico diagnostico[]
+}
+
+model tipo_orden {
+  id_tipo_orden Int            @id @default(autoincrement())
+  nombre        String         @unique @db.VarChar(100)
+  descripcion   String?
+  orden_medica  orden_medica[]
+}
+
+model tipo_sangre {
+  id_tipo_sangre                             Int        @id @default(autoincrement())
+  tipo                                       String     @db.VarChar(5)
+  paciente_paciente_tipo_sangreTotipo_sangre paciente[] @relation("paciente_tipo_sangreTotipo_sangre")
+}
+
+model tipo_tratamiento {
+  id_tipo     Int           @id @default(autoincrement())
+  nombre      String        @unique @db.VarChar(100)
+  descripcion String?
+  tratamiento tratamiento[]
+}
+
+model tratamiento_medicamento {
+  id_tratamiento        Int
+  id_medicamento        Int
+  id_posologia          Int?
+  dosis_especifica      String?                @db.VarChar(120)
+  cantidad              Decimal?               @db.Decimal(10, 2)
+  notas                 String?
+  medicamento           medicamento            @relation(fields: [id_medicamento], references: [id_medicamento], onDelete: NoAction, onUpdate: NoAction)
+  posologia_medicamento posologia_medicamento? @relation(fields: [id_posologia], references: [id_posologia], onDelete: NoAction, onUpdate: NoAction)
+  tratamiento           tratamiento            @relation(fields: [id_tratamiento], references: [id_tratamiento], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_tratamiento, id_medicamento])
 }

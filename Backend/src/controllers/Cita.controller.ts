@@ -5,12 +5,8 @@ import { CitaService } from "../services/Cita.service";
 export class CitaController {
   static async create(req: Request, res: Response) {
     try {
-      // Si ya tienes auth: sacar id_usuario de req.user
-      // const user = (req as any).user;
-      // if (!user || !user.id_usuario) ...
-
-      // De momento, para que funcione sin auth, usamos idUsuario fijo:
-      const idUsuario = 54; // <-- CAMBIA ESTO cuando tengas login
+    
+      const idUsuario = (req as any).user.id_usuario;
 
       const data = citaCreateSchema.parse(req.body);
 
