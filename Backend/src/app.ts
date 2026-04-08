@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import { patientRouter } from "./routes/Paciente.routes";
-
 export const app = express();
 
 app.use(
@@ -11,14 +9,16 @@ app.use(
 );
 
 app.use(express.json());
+
+import patientsRoutes  from "./routes/PacienteRoutes/registrarpaciente.routes";
+app.use("/api/patients", patientsRoutes);
 app.get("/api/patients", (_, res) => {
   res.json({ status: "ok" });
 });
-app.use("/api/patients", patientRouter);
 console.log("rutas registradas");
 
-import { authRouter } from "./routes/Auth.routes";
-app.use("/api/auth", authRouter);
+import authRoutes  from "./routes/Auth.routes";
+app.use("/api/auth", authRoutes);
 app.get("/api/auth", (_, res) => {
   res.json({ status: "Funcionando..." });
 });

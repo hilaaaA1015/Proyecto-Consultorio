@@ -1,0 +1,242 @@
+.detail-container {
+  padding: 2rem;
+  background-color: #f4f7f6;
+  max-width: 1800px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  border-radius: 15px;
+}
+
+.btn-back {
+  background: #0ea37f;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background: #0d9978;
+}
+
+/* Layout Principal */
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2 partes para info, 1 para archivos */
+  gap: 20px;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+}
+
+.card-header h2 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0;
+}
+
+.badge {
+  background: #e9ecef;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Grilla de Información Personal */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-item {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.info-item span {
+  font-weight: 600;
+  color: #888;
+  margin-right: 5px;
+}
+
+/* Grilla de Signos Vitales */
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.vital-box {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.vital-box.highlight {
+  background: #e6f6f2; /* Tono suave de tu color */
+  border: 1px solid #0ea37f;
+}
+
+.vital-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  margin: 0 0 5px 0;
+}
+
+.vital-val {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.vital-box.highlight .vital-val {
+  color: #0ea37f;
+}
+
+.obs-text {
+  color: #555;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Sección de Archivos */
+.files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  gap: 10px;
+}
+
+.file-icon {
+  font-size: 1.5rem;
+}
+
+.file-info {
+  flex: 1;
+}
+
+.file-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.file-date {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.btn-view {
+  background: white;
+  border: 1px solid #0ea37f;
+  color: #0ea37f;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-view:hover {
+  background: #0ea37f;
+  color: white;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Botones de acción en el header de la card */
+.btn-edit-inline, .btn-save-inline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 1px solid #ddd;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  color: #666;
+}
+
+.btn-edit-inline:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.btn-save-inline {
+  background-color: #0ea37f; /* Tu color corporativo */
+  color: white;
+  border-color: #0ea37f;
+}
+
+.btn-save-inline:hover {
+  opacity: 0.9;
+  box-shadow: 0 2px 4px rgba(14, 163, 127, 0.2);
+}
+
+/* Estilo del área de texto cuando se edita */
+.edit-observations-area {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #0ea37f; 
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #333;
+  resize: vertical; 
+  outline: none;
+  background-color: #fff;
+  box-sizing: border-box; 
+}
+
+.edit-observations-area:focus {
+  box-shadow: 0 0 8px rgba(14, 163, 127, 0.1);
+}
+
+/* Estilo del texto en modo lectura */
+.obs-text {
+  color: #444;
+  line-height: 1.6;
+  padding: 8px;
+  background-color: #fcfcfc;
+  border-radius: 4px;
+  border-left: 3px solid #0ea37f; 
+  margin: 0;
+}

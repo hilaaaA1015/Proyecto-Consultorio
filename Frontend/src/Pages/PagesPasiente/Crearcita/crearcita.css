@@ -1,12 +1,14 @@
 .container {
-  padding: 20px;
+  padding: 50px;
   font-family: Arial;
-  background: #f0fdf4;
+  background: #15f384;;
+  border-radius: 15px;
+  margin: 20px;
 }
 
 h1 {
   text-align: center;
-  color: #166534;
+  color: #000000;
 }
 
 .layout {
@@ -16,14 +18,14 @@ h1 {
 
 .calendar {
   flex: 3;
-  background: white;
+  background: rgba(255, 255, 255, 0.8);
   padding: 15px;
   border-radius: 12px;
 }
 
 .formulario {
   flex: 1;
-  background: #dcfce7;
+  background: rgba(220, 252, 231, 0.8);
   padding: 20px;
   border-radius: 12px;
 }
@@ -38,7 +40,7 @@ h1 {
 .formulario select {
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #86efac;
+  border: 1px solid #c9c9c9;
 }
 
 button {

@@ -10,7 +10,7 @@ SegundoNombre: z.string().min(1, "El segundo nombre es obligatorio.").regex(/^[A
 
 Apellido: z
   .string()
-  .min(1, "El apellido es obligatorio.")
+  .min(1, "El primer apellido es obligatorio.")
   .regex(/^[A-Za-zÁÉÍÓÚÑáéíóúñ ]+$/, "El apellido solo puede contener letras."),
 
 SegundoApellido: z
@@ -40,15 +40,17 @@ Telefono: z
   UsuarioPasiente: z
   .string()
   .min(1, "El usuario es obligatorio")
-  .regex(/^[A-Za-zÁÉÍÓÚÑáéíóúñ ]+$/, "El apellido solo puede contener letras."),
+  .regex(/^[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]+$/, "El nombre de usuario contiene caracteres invalidos."),
 
 password: z
   .string()
-  .min(6, "La contraseña debe tener al menos 6 caracteres."),
+  .min(6, "La contraseña debe tener al menos 6 caracteres.")
+  .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, "Debe contener al menos una letra y un número"),
 
 confirmPassword: z
   .string()
   .min(6, "La confirmación de contraseña debe tener al menos 6 caracteres.")
+  .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, "Debe contener al menos una letra y un número"),
 
     
 }).refine((data)=> data.password === data.confirmPassword, {

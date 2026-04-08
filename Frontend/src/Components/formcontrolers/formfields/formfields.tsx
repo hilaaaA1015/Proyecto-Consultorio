@@ -16,13 +16,13 @@ const {as: Component = Input, field, errors, labelText, required, ...rest} = pro
 
 const {name, value, onChange, onBlur} = field;
 return (
-    <FormGroup className={rest.className}>
+    <FormGroup className={`form-group ${rest.className || ""}`}>
         <Form.Label  htmlFor={name}>{labelText}
             {required && <span>*</span>}
         </Form.Label>
          <Component id={name} value={value} onChange ={onChange} onBlur={onBlur} {... rest} />     
              <Form.ErrorMessage show={!!errors} placement='bottomStart'>
-                {errors};
+                {errors}
                 </Form.ErrorMessage> 
             </FormGroup>
 )

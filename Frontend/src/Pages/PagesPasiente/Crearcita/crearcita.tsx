@@ -134,7 +134,7 @@ Por favor selecciona otro turno disponible.`
 
 
   return (
-    <div className="container" style={{ marginTop: "20px" }}>
+    <div className="container">
       <h1>Agendar Cita</h1>
 
       <div className="layout">
@@ -221,7 +221,7 @@ Por favor selecciona otro turno disponible.`
               }}
               required
             >
-              <option value="">Seleccionar hora</option>
+              <option value="">Seleccionar hora inicio</option>
               {HORARIOS.map(h => (
                 <option key={h} value={h}>{h}</option>
               ))}

@@ -5,10 +5,14 @@ import "./layoutpasiente.css"
 
 export default function LayoutPasiente() {
   return (
-    <div>
-      <div className="container" style={{ marginTop: "120px" }}>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      
+      <HeaderPasiente />
+
+      <main style={{ marginTop: "80px", padding: "20px" }}>
         <Outlet />
-      </div>
+      </main>
+
     </div>
   );
 }
