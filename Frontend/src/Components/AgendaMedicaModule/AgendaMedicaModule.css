@@ -1,0 +1,42 @@
+.agendaModuleRoot {
+  width: 100%;
+}
+
+.agendaLayout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.agendaCalendar {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.agendaForm {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.agendaForm form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agendaForm input,
+.agendaForm select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.agendaForm button {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+}
