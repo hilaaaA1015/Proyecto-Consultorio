@@ -1,20 +1,56 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { mockPacientes, Paciente } from './DatosPrueba';
 import "./VerPacientesDoctor.css";
+
+interface Paciente {
+  id_usuario: number;
+  nombre: string;
+  segundo_nombre?: string;
+  primer_apellido: string;
+  segundo_apellido?: string;
+  nacimiento: string;
+  telefono: string;
+  sexo: string;
+}
 
 export const PacientesList = () => {
   const navigate = useNavigate();
+  const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [busqueda, setBusqueda] = useState('');
   const [filtroSexo, setFiltroSexo] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const pacientesFiltrados = useMemo(() => {
-    return mockPacientes.filter((p) => {
-      const matchText = `${p.nombre} ${p.primer_apellido}`.toLowerCase().includes(busqueda.toLowerCase());
-      const matchSexo = filtroSexo === '' || p.sexo === filtroSexo;
-      return matchText && matchSexo;
-    });
+  useEffect(() => {
+    obtenerPacientes();
   }, [busqueda, filtroSexo]);
+
+  const obtenerPacientes = async () => {
+    try {
+      setLoading(true);
+
+      const params = new URLSearchParams();
+
+      if (busqueda) {
+        params.append("busqueda", busqueda);
+      }
+
+      if (filtroSexo) {
+        params.append("sexo", filtroSexo);
+      }
+
+      const response = await fetch(
+        `http://localhost:4000/api/listapacientes?${params.toString()}`
+      );
+
+      const data = await response.json();
+
+      setPacientes(data);
+    } catch (error) {
+      console.error("Error al obtener pacientes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="list-container">
@@ -28,9 +64,9 @@ export const PacientesList = () => {
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
           />
-          <select 
+          <select
             className="filter-select"
-            value={filtroSexo} 
+            value={filtroSexo}
             onChange={(e) => setFiltroSexo(e.target.value)}
           >
             <option value="">Todos los sexos</option>
@@ -39,7 +75,7 @@ export const PacientesList = () => {
           </select>
         </div>
       </header>
-
+      {loading && <p>Cargando pacientes...</p>}
       <div className="table-wrapper">
         <table className="pacientes-table">
           <thead>
@@ -52,16 +88,16 @@ export const PacientesList = () => {
             </tr>
           </thead>
           <tbody>
-            {pacientesFiltrados.map((p) => (
+            {pacientes.map((p) => (
               <tr key={p.id_usuario}>
                 <td>{p.id_usuario}</td>
                 <td className="bold-text">{p.nombre} {p.primer_apellido}</td>
                 <td>{p.nacimiento}</td>
                 <td>{p.telefono}</td>
                 <td>
-                  <button 
+                  <button
                     className="btn-details"
-                    onClick={() => navigate(`/detallepaciente`)}
+                    onClick={() => navigate(`/detallepaciente/${p.id_usuario}`)}
                   >
                     Ver Detalles
                   </button>

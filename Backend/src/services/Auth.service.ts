@@ -5,32 +5,31 @@ import { ENV } from "../config/env";
 
 export const loginService = async (data: any) => {
 
-  // 🔍 1. Buscar usuario
+  // Buscar usuario
   const user = await prisma.usuario.findUnique({
     where: {
       nomperfil: data.UsuarioPasiente,
     },
   });
-
   if (!user) {
     throw new Error("Usuario no existe");
   }
 
-  // 🔐 2. Cifrar password ingresada
+  // cifrar password ingresada
   const encrypted = encryptPassword(data.password);
 
-  // ⚖️ 3. Comparar
+  // Comparar
   if (encrypted !== user.password_hash) {
     throw new Error("Contraseña incorrecta");
   }
 
-  // 🎟️ 4. Generar JWT
+  // Generar JWT
   const token = jwt.sign(
     {
-      id: user.id_usuario,
+      id_usuario: user.id_usuario,
       rol: user.rol,
     },
-    ENV.ENCRYPT_SECRET,
+    ENV.JWT_SECRET,
     {
       expiresIn: "2h",
     }
@@ -39,9 +38,9 @@ export const loginService = async (data: any) => {
   return {
     token,
     user: {
-      id: user.id_usuario,
+      id_usuario: user.id_usuario,
       rol: user.rol,
-      username: user.nomperfil,
+      nomperfil: user.nomperfil,
     },
   };
 };

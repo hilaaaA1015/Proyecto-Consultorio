@@ -84,7 +84,7 @@ return(
 <Route path="/crearcitadoctor" element={<CrearCitaDoctor></CrearCitaDoctor>}></Route>
 <Route path="/calendariodoctor" element={<CalendarioDoctor></CalendarioDoctor>}></Route>
 <Route path="/verlistapacientes" element={<PacientesList></PacientesList>}></Route>
-<Route path="/detallepaciente" element={<PacienteDetalle></PacienteDetalle>}></Route>
+<Route path="/detallepaciente/:id" element={<PacienteDetalle />} />
 <Route path="/verperfildoctor" element={<PerfilDoctor></PerfilDoctor>}></Route>
 
 </Route >

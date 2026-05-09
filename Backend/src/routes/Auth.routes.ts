@@ -11,7 +11,7 @@ router.get("/perfil", authMiddleware, async (req: any, res) => {
   try {
     const userId = req.user.id;
 
-    // 🔥 Buscar usuario real en BD
+    // Buscar usuario real en BD
     const user = await prisma.usuario.findUnique({
       where: {
         id_usuario: userId,
@@ -24,7 +24,7 @@ router.get("/perfil", authMiddleware, async (req: any, res) => {
       });
     }
 
-    // 🔥 DEVOLVER LO QUE NECESITA EL FRONTEND
+    // DEVOLVER LO QUE NECESITA EL FRONTEND
     res.json({
       user: {
         id: user.id_usuario,

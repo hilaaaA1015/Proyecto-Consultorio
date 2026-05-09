@@ -163,6 +163,7 @@ const CrearUsuarioNuevoVistaPasiente = () => {
       </div>
     </div>
   )
+  
 }
 
 export default CrearUsuarioNuevoVistaPasiente;
