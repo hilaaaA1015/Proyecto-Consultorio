@@ -3,13 +3,12 @@ import { CitaCreateInput } from "../schemas/Cita.schema";
 
 export class CitaService {
   static async create(data: CitaCreateInput, idUsuario: number) {
-    // Buscar el doctor (solo hay uno)
     const doctor = await prisma.doctor.findFirst();
+
     if (!doctor) {
       throw new Error("No hay doctor registrado en el sistema");
     }
 
-    // Buscar paciente asociado al usuario logeado
     const paciente = await prisma.paciente.findFirst({
       where: { id_usuario: idUsuario },
     });
@@ -18,36 +17,68 @@ export class CitaService {
       throw new Error("No se encontró el paciente asociado al usuario");
     }
 
-    // Construir horainicio y horafin a partir de fecha (Date) + horacita (string "HH:mm")
+    const fecha = new Date(data.fecha);
+    fecha.setHours(0, 0, 0, 0);
 
-    // data.fecha ya es Date (solo parte de fecha)
-    const fecha = data.fecha;
+    const [hh, mm] = data.horacita.split(":").map(Number);
 
-    // horacita: "HH:mm"
-    const [hhStr, mmStr] = data.horacita.split(":");
-    const hh = parseInt(hhStr, 10);
-    const mm = parseInt(mmStr, 10);
+    if (isNaN(hh) || isNaN(mm)) {
+      throw new Error("Hora inválida");
+    }
 
-    // horainicio: mismo día que 'fecha', hora = horacita
-    const horainicio = new Date(fecha);
-    horainicio.setHours(hh, mm, 0, 0);
+    const hora = new Date(fecha);
+    hora.setHours(hh, mm, 0, 0);
 
-    // horafin = horainicio + 35 minutos
-    const horafin = new Date(horainicio.getTime() + 35 * 60 * 1000);
+    const choque = await prisma.cita.findFirst({
+      where: {
+        fecha,
+        hora,
+      },
+    });
 
-    // 4. Crear cita
+    if (choque) {
+      throw new Error("Ya existe una cita en ese horario");
+    }
+
     const cita = await prisma.cita.create({
       data: {
-        fecha,                         
-        horainicio,                    
-        horafin,                       
-        estado: "pendiente",
+        fecha,
+        hora,
+        estado: "Pendiente",
         motivo: data.motivo,
-        id_doctor: doctor.id_doctor,
-        id_paciente: paciente.id_paciente,
+        id_doctor: doctor.id_usuario,
+        id_paciente: paciente.id_usuario,
       },
     });
 
     return cita;
+  }
+
+  static async getAll() {
+    return prisma.cita.findMany({
+      include: {
+        doctor: true,
+        paciente: true,
+      },
+    });
+  }
+
+  // =========================
+  // ACTUALIZAR ESTADO CITA
+  // =========================
+  static async updateEstado(id_cita: number, estado: string) {
+    return prisma.cita.update({
+      where: { id_cita },
+      data: { estado },
+    });
+  }
+
+  // =========================
+  // ELIMINAR CITA
+  // =========================
+  static async delete(id_cita: number) {
+    return prisma.cita.delete({
+      where: { id_cita },
+    });
   }
 }
