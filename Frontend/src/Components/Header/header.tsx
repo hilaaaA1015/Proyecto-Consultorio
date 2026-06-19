@@ -8,7 +8,7 @@ export default function Header() {
     <header className="header">
       <Link to="/" className="header__left">
         <img
-          src="/imagenes/Regina-04(este_es) 2.png"
+          src="/imagenes/logo_regina.png"
           alt="Logo consultorio"
           className="header__logo"
         />
