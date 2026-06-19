@@ -1,7 +1,11 @@
 import React from "react";
 import "./homedoctor.css"
 import LayoutDoctor from "../../layoutInternos/LayoutDoctor/layoutdoctor";
+import AgendaMedicaModule from "../../Components/AgendaMedicaModule/AgendaMedicaModule";
+
+
 export default function HomeDoctor() {
+
     const citasHoy = [
         {
             hora: "08:00",
@@ -37,6 +41,8 @@ export default function HomeDoctor() {
             <>
             <div>
                 <div className="dashboard-container">
+
+                    
              
 
                     {/* 🔹 RESUMEN DEL DÍA */}
@@ -57,9 +63,13 @@ export default function HomeDoctor() {
                             <h3>Canceladas</h3>
                             <p>{canceladas}</p>
                         </div>
+                        
                     </div>
+                    
 
                     {/* 🔹 CITAS DEL DÍA */}
+                    {/* 🔹 AGENDA MÉDICA */}
+
                     <div className="citas">
                         <h2>Citas del día</h2>
                         <table>

@@ -79,3 +79,17 @@
 .login__links a:hover {
   text-decoration: underline;
 }
+
+.login__volver {
+  margin-top: 10px;
+  display: inline-block;
+  color: #555;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.login__volver:hover {
+  color: #0a9e6d;
+  text-decoration: underline;
+}

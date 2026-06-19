@@ -13,6 +13,7 @@ import { es } from "date-fns/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./AgendaMedicaModule.css";
 
+
 const localizer = dateFnsLocalizer({
   format,
   parse,
@@ -44,8 +45,16 @@ const AgendaMedicaModule: React.FC<Props> = ({
   citasExternas = [],
   onCrearCita,
 }) => {
+
   const [citas, setCitas] = useState<Cita[]>(citasExternas);
+
   const [fechaActual, setFechaActual] = useState(new Date());
+
+  const [modal, setModal] = useState({
+    open: false,
+    message: "",
+    type: "error",
+  });
 
   const [form, setForm] = useState({
     paciente: "",
@@ -57,7 +66,21 @@ const AgendaMedicaModule: React.FC<Props> = ({
 
   // 📅 seleccionar día
   const handleSelectSlot = ({ start }: { start: Date }) => {
-    if (isWeekend(start)) return alert("No fines de semana");
+    if (isWeekend(start)) {
+  return setModal({
+    open: true,
+    message: "No se pueden agendar citas los fines de semana.",
+    type: "error",
+  });
+}
+
+if (isBefore(start, new Date())) {
+    return setModal({
+      open: true,
+      message: "No puedes seleccionar fechas anteriores al día actual.",
+      type: "error",
+    });
+  }
 
     setForm({
       ...form,
@@ -72,15 +95,26 @@ const AgendaMedicaModule: React.FC<Props> = ({
     const start = new Date(`${form.fecha}T${form.horaInicio}`);
     const end = addMinutes(start, 35);
 
-    if (isBefore(start, new Date())) return alert("Fecha inválida");
-
+    if (isBefore(start, new Date())) {
+  return setModal({
+    open: true,
+    message: "La fecha seleccionada no es válida.",
+    type: "error",
+  });
+}
     const existe = citas.find(
       (c) =>
         format(c.start, "yyyy-MM-dd") === form.fecha &&
         format(c.start, "HH:mm") === form.horaInicio
     );
 
-    if (existe) return alert("Horario ocupado");
+   if (existe) {
+  return setModal({
+    open: true,
+    message: "El horario seleccionado ya está ocupado.",
+    type: "error",
+  });
+}
 
     const nueva: Cita = {
       id: Date.now().toString(),
@@ -93,6 +127,11 @@ const AgendaMedicaModule: React.FC<Props> = ({
     };
 
     setCitas([...citas, nueva]);
+    setModal({
+  open: true,
+  message: "Cita agendada correctamente.",
+  type: "success",
+});
     onCrearCita && onCrearCita(nueva);
 
     setForm({
@@ -151,58 +190,135 @@ const AgendaMedicaModule: React.FC<Props> = ({
           <h3>Nueva Cita</h3>
 
           <form onSubmit={agregarCita}>
-            <input
-              placeholder="Paciente"
-              value={form.paciente}
-              onChange={(e) =>
-                setForm({ ...form, paciente: e.target.value })
-              }
-              required
-            />
 
-            <select
-              value={form.servicio}
-              onChange={(e) =>
-                setForm({ ...form, servicio: e.target.value })
-              }
-              required
-            >
-              <option value="">Servicio</option>
-              <option>Consulta médica</option>
-              <option>Chequeo</option>
-            </select>
+  <div className="formGroup">
+  <label>Paciente</label>
 
-            <input type="date" value={form.fecha} readOnly />
+  <div className="searchInput">
 
-            <select
-              value={form.horaInicio}
-              onChange={(e) => {
-                const inicio = e.target.value;
-                const temp = new Date();
-                const [h, m] = inicio.split(":");
-                temp.setHours(+h, +m);
+    <input
+      type="text"
+      placeholder="Buscar paciente..."
+      value={form.paciente}
+      onChange={(e) =>
+        setForm({ ...form, paciente: e.target.value })
+      }
+      required
+    />
 
-                setForm({
-                  ...form,
-                  horaInicio: inicio,
-                  horaFin: format(addMinutes(temp, 35), "HH:mm"),
-                });
-              }}
-              required
-            >
-              <option value="">Hora</option>
-              {HORARIOS.map((h) => (
-                <option key={h}>{h}</option>
-              ))}
-            </select>
+    <button
+  type="button"
+  className="searchBtn"
+  onClick={() => {
+    console.log("Buscar paciente");
+  }}
+>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/13/13311.png"
+    alt="Buscar"
+  />
+</button>
 
-            <input type="time" value={form.horaFin} readOnly />
+  </div>
+</div>
 
-            <button type="submit">Agendar</button>
-          </form>
+  <div className="formGroup">
+    <label>Servicio Médico</label>
+    <select
+      value={form.servicio}
+      onChange={(e) =>
+        setForm({ ...form, servicio: e.target.value })
+      }
+      required
+    >
+      <option value="">Seleccione un servicio</option>
+      <option>Consulta médica</option>
+      <option>Chequeo</option>
+    </select>
+  </div>
+
+  <div className="formGroup">
+  <label>Fecha de la cita</label>
+
+  <input
+    type="date"
+    value={form.fecha}
+    readOnly
+  />
+
+  <small className="calendarHint">
+    Seleccione una fecha haciendo clic en el calendario
+  </small>
+</div>
+
+  <div className="formGroup">
+    <label>Hora de inicio</label>
+    <select
+      value={form.horaInicio}
+      onChange={(e) => {
+        const inicio = e.target.value;
+        const temp = new Date();
+        const [h, m] = inicio.split(":");
+
+        temp.setHours(+h, +m);
+
+        setForm({
+          ...form,
+          horaInicio: inicio,
+          horaFin: format(addMinutes(temp, 35), "HH:mm"),
+        });
+      }}
+      required
+    >
+      <option value="">Seleccione hora</option>
+
+      {HORARIOS.map((h) => (
+        <option key={h}>{h}</option>
+      ))}
+    </select>
+  </div>
+
+  <div className="formGroup">
+    <label>Hora de finalización</label>
+    <input
+      type="time"
+      value={form.horaFin}
+      readOnly
+    />
+  </div>
+
+  <button type="submit">
+    Agendar
+  </button>
+
+</form>
         </div>
 
       </div>
+      {modal.open && (
+  <div className="modalOverlay">
+    <div className={`modalBox ${modal.type}`}>
+      <h3>
+        {modal.type === "success"
+          ? "✅ Operación exitosa"
+          : "⚠️ Atención"}
+      </h3>
+
+      <p>{modal.message}</p>
+
+      <button
+        onClick={() =>
+          setModal({
+            ...modal,
+            open: false,
+          })
+        }
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };

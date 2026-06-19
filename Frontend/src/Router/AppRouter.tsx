@@ -43,9 +43,15 @@ import HomeSecretaria from "../Pages/PagesSecretaria/homesecretaria";
 import CambiarContra from '../Pages/CambiarContra/CambiarContra';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import CalendarioDoctor from "../Pages/PagesDoctor/CalendarioDoctor/CalendarioDoctor";
+import ModuleCalendar from "./../Components/AgendaMedicaModule/AgendaMedicaModule";
+import ModuleCalendarSecre from "./../Components/AgendaMedicaModule/AgendaMedicaModule";
+
+
+
 
 export default function AppRouter() {
+
+    
 
 return(
 <BrowserRouter>
@@ -82,7 +88,7 @@ return(
 
 <Route path="/homedoctor" element={<HomeDoctor></HomeDoctor>}></Route>
 <Route path="/crearcitadoctor" element={<CrearCitaDoctor></CrearCitaDoctor>}></Route>
-<Route path="/calendariodoctor" element={<CalendarioDoctor></CalendarioDoctor>}></Route>
+<Route path="/ModuleCalendar" element={<ModuleCalendar></ModuleCalendar>}></Route>
 <Route path="/verlistapacientes" element={<PacientesList></PacientesList>}></Route>
 <Route path="/detallepaciente" element={<PacienteDetalle></PacienteDetalle>}></Route>
 <Route path="/verperfildoctor" element={<PerfilDoctor></PerfilDoctor>}></Route>
@@ -100,6 +106,7 @@ return(
 
 <Route path="/homesecretaria" element={<HomeSecretaria></HomeSecretaria>}></Route>
 <Route path="/homesecretaria/vistapagocita" element={<VistaPagoCita></VistaPagoCita>}></Route>
+<Route path="/ModuleCalendarSecre" element={<ModuleCalendarSecre></ModuleCalendarSecre>}></Route>
 <Route path="/homesecretaria/vistapagocita/VistaPagoModal" element={<VistaPagoModal></VistaPagoModal>}></Route>
 <Route path="/homesecretaria/CrearNuevoPasienteVistaSecretaria" element={<CrearNuevoPasienteVistaSecretaria></CrearNuevoPasienteVistaSecretaria>} ></Route>
 

@@ -2,6 +2,7 @@ import React from "react";
 import "./headerdoctor.css"
 import { Link } from "react-router-dom";
 
+
 export default function HeaderDoctor() {
   return (
     <header className="header">
@@ -17,7 +18,7 @@ export default function HeaderDoctor() {
 
       {/* MENÚ */}
       <nav className="header__nav">
-        <Link to="/calendariodoctor">Calendario</Link>
+        <Link to="/ModuleCalendar">Calendario</Link>
         <Link to="/verlistapacientes">Pacientes</Link>
         <Link to="/verperfildoctor"> Mi Perfil</Link>
       </nav>

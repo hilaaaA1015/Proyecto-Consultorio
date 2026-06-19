@@ -94,7 +94,9 @@ export default function Login() {
         <div className="login__links">
           <Link to="/cambiar-contraseña">¿Olvidaste tu contraseña?</Link>
           <Link to="/crearusuariopasientevista">Crear una cuenta</Link>
+          
         </div>
+        <div> <Link to="/" className="login__volver">← Volver </Link></div>
       </div>
 
     </div>

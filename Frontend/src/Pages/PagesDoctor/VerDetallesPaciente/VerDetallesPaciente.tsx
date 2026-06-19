@@ -41,6 +41,14 @@ export const PacienteDetalle = () => {
     setIsEditing(false);
   };
 
+  const handleSaveVitals = () => {
+  console.log("Guardando signos vitales:", vitals);
+
+  // Aquí luego haces el PATCH al backend
+
+  setIsEditingVitals(false);
+};
+
   // Datos de ejemplo
   const paciente: PacienteCompleto = {
     id_usuario: Number(id),
@@ -71,6 +79,18 @@ export const PacienteDetalle = () => {
     { id: 3, nombre: "Receta_Anterior.jpg", fecha: "2023-08-20", tipo: "Imagen" },
   ];
 
+  const [isEditingVitals, setIsEditingVitals] = useState(false);
+
+const [vitals, setVitals] = useState({
+  peso_kg: paciente?.peso_kg || 80,
+  estatura_cm: paciente?.estatura_cm || 175,
+  imc: paciente?.imc || 26.12,
+  presion_arterial: paciente?.presion_arterial || "120/80",
+  frecuencia_cardiaca: paciente?.frecuencia_cardiaca || 72,
+  temperatura: paciente?.temperatura || 36.6,
+  saturacion_oxigeno: paciente?.saturacion_oxigeno || 98,
+});
+
   return (
     <div className="detail-container">
       <button className="btn-back" onClick={() => navigate(`/verlistapacientes`)}>
@@ -96,36 +116,169 @@ export const PacienteDetalle = () => {
           </div>
 
           <div className="card">
-            <div className="card-header">
-              <h2>Datos Antropométricos y Signos Vitales</h2>
-            </div>
-            <div className="vitals-grid">
-              <div className="vital-box">
-                <p className="vital-label">Peso / Talla</p>
-                <p className="vital-val">{paciente.peso_kg}kg / {paciente.estatura_cm}cm</p>
-              </div>
-              <div className="vital-box highlight">
-                <p className="vital-label">IMC</p>
-                <p className="vital-val">{paciente.imc}</p>
-              </div>
-              <div className="vital-box">
-                <p className="vital-label">P. Arterial</p>
-                <p className="vital-val">{paciente.presion_arterial}</p>
-              </div>
-              <div className="vital-box">
-                <p className="vital-label">F. Cardiaca</p>
-                <p className="vital-val">{paciente.frecuencia_cardiaca} lpm</p>
-              </div>
-              <div className="vital-box">
-                <p className="vital-label">Temp.</p>
-                <p className="vital-val">{paciente.temperatura}°C</p>
-              </div>
-              <div className="vital-box">
-                <p className="vital-label">SPO2</p>
-                <p className="vital-val">{paciente.saturacion_oxigeno}%</p>
-              </div>
-            </div>
-          </div>
+  <div className="card-header">
+    <h2>Datos Antropométricos y Signos Vitales</h2>
+
+    {!isEditingVitals ? (
+      <button
+        className="btn-edit-inline"
+        onClick={() => setIsEditingVitals(true)}
+      >
+        ✏️ Editar
+      </button>
+    ) : (
+      <button
+        className="btn-save-inline"
+        onClick={handleSaveVitals}
+      >
+        💾 Guardar
+      </button>
+    )}
+  </div>
+
+  <div className="vitals-grid">
+
+    <div className="vital-box">
+      <p className="vital-label">Peso</p>
+
+      {isEditingVitals ? (
+        <input
+          type="number"
+          value={vitals.peso_kg}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              peso_kg: Number(e.target.value),
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">{vitals.peso_kg} kg</p>
+      )}
+    </div>
+
+    <div className="vital-box">
+      <p className="vital-label">Talla</p>
+
+      {isEditingVitals ? (
+        <input
+          type="number"
+          value={vitals.estatura_cm}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              estatura_cm: Number(e.target.value),
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">{vitals.estatura_cm} cm</p>
+      )}
+    </div>
+
+    <div className="vital-box highlight">
+      <p className="vital-label">IMC</p>
+
+      {isEditingVitals ? (
+        <input
+          type="number"
+          step="0.01"
+          value={vitals.imc}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              imc: Number(e.target.value),
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">{vitals.imc}</p>
+      )}
+    </div>
+
+    <div className="vital-box">
+      <p className="vital-label">P. Arterial</p>
+
+      {isEditingVitals ? (
+        <input
+          type="text"
+          value={vitals.presion_arterial}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              presion_arterial: e.target.value,
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">{vitals.presion_arterial}</p>
+      )}
+    </div>
+
+    <div className="vital-box">
+      <p className="vital-label">F. Cardiaca</p>
+
+      {isEditingVitals ? (
+        <input
+          type="number"
+          value={vitals.frecuencia_cardiaca}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              frecuencia_cardiaca: Number(e.target.value),
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">
+          {vitals.frecuencia_cardiaca} lpm
+        </p>
+      )}
+    </div>
+
+    <div className="vital-box">
+      <p className="vital-label">Temp.</p>
+
+      {isEditingVitals ? (
+        <input
+          type="number"
+          step="0.1"
+          value={vitals.temperatura}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              temperatura: Number(e.target.value),
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">{vitals.temperatura}°C</p>
+      )}
+    </div>
+
+    <div className="vital-box">
+      <p className="vital-label">SPO2</p>
+
+      {isEditingVitals ? (
+        <input
+          type="number"
+          value={vitals.saturacion_oxigeno}
+          onChange={(e) =>
+            setVitals({
+              ...vitals,
+              saturacion_oxigeno: Number(e.target.value),
+            })
+          }
+        />
+      ) : (
+        <p className="vital-val">
+          {vitals.saturacion_oxigeno}%
+        </p>
+      )}
+    </div>
+
+  </div>
+</div>
         </div>
 
         {/* SECCIÓN DE OBSERVACIONES */}
