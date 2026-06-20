@@ -56,31 +56,39 @@ export default function HomeSecretaria() {
 
         <table>
           <thead>
-            <tr>
-              <th>Hora</th>
-              <th>Paciente</th>
-              <th>Motivo</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
+  <tr>
+    <th>Hora</th>
+    <th>Paciente</th>
+    <th>Motivo</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
 
-          <tbody>
-            {citasHoy.map((cita, index) => (
-              <tr key={index}>
-                <td>{cita.hora}</td>
-                <td>{cita.paciente}</td>
-                <td>{cita.motivo}</td>
+<tbody>
+  {citasHoy.map((cita, index) => (
+    <tr key={index}>
+      <td>{cita.hora}</td>
+      <td>{cita.paciente}</td>
+      <td>{cita.motivo}</td>
 
-                <td>
-                  <span
-                    className={`estado ${cita.estado.toLowerCase()}`}
-                  >
-                    {cita.estado}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+      <td>
+        <span className={`estado ${cita.estado.toLowerCase()}`}>
+          {cita.estado}
+        </span>
+      </td>
+
+      <td>
+        <Link
+          to="/homesecretaria/vistapagocita"
+          className="btn-pago"
+        >
+          Realizar pago
+        </Link>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
 
       </div>
@@ -97,9 +105,6 @@ export default function HomeSecretaria() {
         <button>👤 Registrar paciente</button>
     </Link>
 
-    <Link to="/homesecretaria/vistapagocita">
-        <button>💳 Registrar pago</button>
-    </Link>
 
 </div>
 
@@ -108,3 +113,4 @@ export default function HomeSecretaria() {
     </div>
   );
 }
+

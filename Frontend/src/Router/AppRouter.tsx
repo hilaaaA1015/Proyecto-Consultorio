@@ -44,8 +44,9 @@ import CambiarContra from '../Pages/CambiarContra/CambiarContra';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import ModuleCalendar from "./../Components/AgendaMedicaModule/AgendaMedicaModule";
-import ModuleCalendarSecre from "./../Components/AgendaMedicaModule/AgendaMedicaModule";
-
+import ModuleCalendarSecre from "./../Pages/PagesSecretaria/CalendarSecre";
+import VerPacientesSecre from "../Pages/PagesSecretaria/ListaPacientes/ListaPacientes";
+import { PerfilSecre } from "../Pages/PagesSecretaria/perfilSecre";
 
 
 
@@ -109,10 +110,15 @@ return(
 <Route path="/ModuleCalendarSecre" element={<ModuleCalendarSecre></ModuleCalendarSecre>}></Route>
 <Route path="/homesecretaria/vistapagocita/VistaPagoModal" element={<VistaPagoModal></VistaPagoModal>}></Route>
 <Route path="/homesecretaria/CrearNuevoPasienteVistaSecretaria" element={<CrearNuevoPasienteVistaSecretaria></CrearNuevoPasienteVistaSecretaria>} ></Route>
-
+<Route
+    path="/PerfilSecre"
+    element={<PerfilSecre />}
+/>
+  <Route
+    path="/homesecretaria/pacientes"
+    element={<VerPacientesSecre />}
+  />
 </Route>
-
-
 </Routes>
 
 

@@ -21,7 +21,7 @@ export default function HeaderSecretaria(){
 
          
                 <Link to="/ModuleCalendarSecre">Calendario</Link>
-                <Link to="/verlistapacientessecre">Pacientes</Link>
+                <Link to="/homesecretaria/pacientes">Pacientes</Link>
                 <Link to="/PerfilSecre">Mi Perfil</Link>
                 
                 
