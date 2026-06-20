@@ -1,40 +1,64 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./headerpasiente.css";
 
 export default function HeaderPasiente() {
-
   return (
-    <header className="header">
+    <header className="patient-header">
 
-      <Link to="/homepasiente" className="header__left">
-              <img
-                src="/imagenes/logo_regina.png"
-                alt="Logo consultorio"
-                className="header__logo"
-              />
-              <span className="header__title">Consultorio Médico General</span>
-            </Link>
+      <Link to="/homepasiente" className="patient-header__brand">
+        <img
+          src="/imagenes/logo_regina.png"
+          alt="Logo consultorio"
+          className="patient-header__logo"
+        />
 
-      <nav className="header__nav">
-        <Link to="/crearcita">Calendario</Link>
+        <span className="patient-header__title">
+          Consultorio Médico General
+        </span>
+      </Link>
 
-        <div className="header__dropdown">
-          <button className="dropdown__btn">
-            Servicios ▾
-          </button>
+      <nav className="patient-header__nav">
 
-          <div className="dropdown__menu">
-            <Link to="/crearcita">Agendar cita</Link>
-          </div>
-        </div>
+        <NavLink
+          to="/homepasiente"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Inicio
+        </NavLink>
 
-        <Link to="/Perfil">Perfil</Link>
-        <Link to="/notificaciones">Notificaciones</Link>
+        <NavLink
+          to="/crearcita"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Agendar Cita
+        </NavLink>
+
+        <NavLink
+          to="/calendariopasiente"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Calendario
+        </NavLink>
+
+        <NavLink
+          to="/expedientepasiente"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Mi Expediente
+        </NavLink>
+
+        <NavLink
+          to="/perfilpasiente"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Mi Perfil
+        </NavLink>
+
       </nav>
 
-      <Link to="/" className="header__loginBtn">
-        Cerrar Sesión 
+      <Link to="/" className="patient-header__logout">
+        Cerrar Sesión
       </Link>
 
     </header>

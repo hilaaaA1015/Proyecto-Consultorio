@@ -1,189 +1,476 @@
-/* 🔹 CONTENEDOR PRINCIPAL */
-.home-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #2c3e50;
-}
-/* 🔹 CONTENEDOR DEL DASHBOARD */
-.dashboard-wrapper {
-  background: #f8fafc;
-  padding: 30px;
-  border-radius: 16px;
-
-  /* sombra suave tipo app moderna */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-
-  /* separación del header */
-  margin-top: 20px;
-}
-/* 🔹 HEADER */
-.home-header {
-  text-align: center;
-  margin-bottom: 40px;
+.patient-home-page {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  background: radial-gradient(circle at top, #ffffff 0%, #f4f7fb 45%, #eef3f8 100%);
+  padding: 22px 24px 30px;
 }
 
-.home-header h1 {
-  font-size: 2.2rem;
-  color: #0f5132;
-  margin-bottom: 10px;
+/* ===== CONTENEDOR GENERAL MÁS ANCHO ===== */
+
+.patient-home-page > section {
+  width: min(1680px, calc(100vw - 48px));
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.home-subtitle {
-  color: #6c757d;
-  font-size: 1.1rem;
+/* ===== ENCABEZADO ===== */
+
+.patient-home-hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+  margin-bottom: 20px;
 }
 
-/* 🔹 GRID */
-.home-grid {
+.patient-home-hero-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #0ea37f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.3rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.patient-home-hero h1 {
+  color: #166534;
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+  letter-spacing: -0.8px;
+}
+
+.patient-home-hero p {
+  color: #64748b;
+  font-size: 1.05rem;
+}
+
+/* ===== TARJETAS RESUMEN ===== */
+
+.patient-home-stats {
+  margin-bottom: 20px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
 }
 
-/* 🔹 TARJETAS */
-.home-card {
-  background: #ffffff;
-  padding: 22px;
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f1f1f1;
-  transition: all 0.25s ease;
+.patient-stat-card {
+  min-height: 132px;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #e1e8ef;
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.07);
+  transition: 0.18s ease;
 }
 
-.home-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+.patient-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.09);
 }
 
-/* 🔹 TITULOS */
-.home-card-title {
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  color: #34495e;
+.patient-stat-icon {
+  width: 66px;
+  height: 66px;
+  border-radius: 18px;
+  background: #dcfce7;
+  color: #0ea37f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.95rem;
+  font-weight: 900;
 }
 
-/* 🔹 CITAS */
-.appointment-item {
+.patient-stat-card span {
+  display: block;
+  color: #334155;
+  font-size: 0.96rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.patient-stat-card h2 {
+  color: #166534;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.patient-stat-card p {
+  color: #64748b;
+  font-size: 0.93rem;
+}
+
+/* ===== GRID PRINCIPAL MÁS APROVECHADO ===== */
+
+.patient-home-main-grid {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1.55fr 1.15fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.patient-appointments-card,
+.patient-summary-card,
+.patient-actions-card {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #e1e8ef;
+  border-radius: 18px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.07);
+}
+
+.patient-appointments-card,
+.patient-summary-card {
+  padding: 24px 24px 22px;
+}
+
+/* ===== TÍTULOS DE TARJETA ===== */
+
+.patient-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.patient-card-title {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 12px;
 }
 
-.date-badge {
-  background: linear-gradient(135deg, #d0ebff, #e7f5ff);
-  padding: 10px;
+.patient-card-title span {
+  color: #0ea37f;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.patient-card-title h2 {
+  color: #1f2937;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.patient-card-link {
+  color: #047857;
+  text-decoration: none;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.patient-card-link:hover {
+  color: #0ea37f;
+}
+
+/* ===== LISTA DE CITAS ===== */
+
+.patient-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.patient-appointment-item {
+  min-height: 112px;
+  background: #fbfcfe;
+  border: 1px solid #dfe7ef;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 86px 1fr auto;
+  align-items: center;
+  gap: 18px;
+  transition: 0.18s ease;
+}
+
+.patient-appointment-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.07);
+}
+
+.patient-appointment-date {
+  width: 76px;
+  height: 80px;
+  background: #dcfce7;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #166534;
+}
+
+.patient-appointment-date strong {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.patient-appointment-date span {
+  margin-top: 5px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.patient-appointment-info h3 {
+  color: #1f2937;
+  font-size: 1.22rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.patient-appointment-info p {
+  color: #64748b;
+  font-size: 0.98rem;
+  margin-bottom: 6px;
+}
+
+.patient-appointment-info span {
+  color: #047857;
+  font-weight: 800;
+  font-size: 0.94rem;
+}
+
+.patient-appointment-status {
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.patient-appointment-status.confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.patient-appointment-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.patient-outline-button {
+  width: 100%;
+  height: 50px;
+  margin-top: 14px;
+  border: 1.5px solid #0ea37f;
   border-radius: 10px;
-  text-align: center;
-  min-width: 55px;
+  background: white;
+  color: #047857;
+  text-decoration: none;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  transition: 0.18s ease;
 }
 
-.date-day {
-  display: block;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #1976d2;
+.patient-outline-button:hover {
+  background: #ecfdf5;
 }
 
-.date-month {
-  font-size: 0.7rem;
-  color: #1976d2;
+/* ===== RESUMEN DEL PACIENTE ===== */
+
+.patient-summary-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
 
-.appointment-doctor {
-  margin: 0;
+.patient-summary-item {
+  min-height: 132px;
+  background: #fbfcfe;
+  border: 1px solid #dfe7ef;
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.summary-mini-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #0ea37f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.7rem;
+  font-weight: 900;
+}
+
+.patient-summary-item h3 {
+  color: #166534;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.patient-summary-item p {
+  color: #334155;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+/* ===== ACCIONES RÁPIDAS ===== */
+
+.patient-actions-card {
+  margin-bottom: 18px;
+  padding: 24px 24px 24px;
+}
+
+.patient-actions-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.patient-action-button {
+  height: 62px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0ea37f, #087a5a);
+  color: white;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 1.02rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 12px 22px rgba(14, 163, 127, 0.18);
+  transition: 0.18s ease;
+}
+
+.patient-action-button span {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.patient-action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(14, 163, 127, 0.25);
+}
+
+/* ===== NOTA ===== */
+
+.patient-home-note {
+  min-height: 60px;
+  background: linear-gradient(90deg, #dcfce7, #f0fdf4);
+  border: 1px solid #c8f1d7;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #166534;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+}
+
+.note-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0ea37f;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.patient-home-note p {
+  font-size: 0.96rem;
   font-weight: 600;
 }
 
-.appointment-detail {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #6c757d;
-}
+/* ===== RESPONSIVE ===== */
 
-/* 🔹 MÉTRICAS */
-.metrics-grid {
-  display: flex;
-  gap: 20px;
-}
+@media (max-width: 1280px) {
+  .patient-home-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-.metric {
-  flex: 1;
-  text-align: center;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  transition: 0.2s;
-}
-
-.metric:hover {
-  background: #eef3f7;
-}
-
-.metric-label {
-  font-size: 0.8rem;
-  color: #6c757d;
-  margin: 5px 0;
-}
-
-.metric-value {
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-/* 🔹 BOTONES */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.hero_btn {
-  padding: 10px 18px;
-  border-radius: 8px;
-  background: #198754;
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: 0.2s;
-}
-
-.hero_btn:hover {
-  background: #157347;
-}
-
-.button-secondary {
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
-  background: transparent;
-  border: 1px solid #0d6efd;
-  color: #0d6efd;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.button-secondary:hover {
-  background: #0d6efd;
-  color: white;
-}
-
-/* 🔹 SECCIÓN FULL WIDTH */
-.full-width {
-  grid-column: 1 / -1;
-}
-
-/* 🔹 RESPONSIVE */
-@media (max-width: 768px) {
-  .home-grid {
+  .patient-home-main-grid {
     grid-template-columns: 1fr;
   }
 
-  .home-header h1 {
-    font-size: 1.6rem;
+  .patient-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .patient-home-page {
+    padding: 18px 14px 24px;
+  }
+
+  .patient-home-page > section {
+    width: min(100%, calc(100vw - 28px));
+  }
+
+  .patient-home-hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .patient-home-hero h1 {
+    font-size: 2.1rem;
+  }
+
+  .patient-home-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-stat-card {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .patient-appointment-item {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .patient-appointment-status {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .patient-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 }

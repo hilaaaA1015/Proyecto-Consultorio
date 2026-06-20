@@ -1,128 +1,208 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import "./homepasiente.css";
 
-interface Cita {
-  id: number;
-  doctor: string;
-  especialidad: string;
-  fecha: string;
-  hora: string;
-}
+const proximasCitas = [
+  {
+    dia: "20",
+    mes: "Jun",
+    doctor: "Dr. Carlos Martínez",
+    especialidad: "Medicina General",
+    hora: "09:00 AM",
+    estado: "Confirmada",
+  },
+  {
+    dia: "25",
+    mes: "Jun",
+    doctor: "Dra. María López",
+    especialidad: "Cardiología",
+    hora: "02:30 PM",
+    estado: "Pendiente",
+  },
+];
 
 export default function HomePasiente() {
-  const navigate = useNavigate();
-
-  const [user, setUser] = useState<any>(null);
-  const [proximasCitas, setProximasCitas] = useState<Cita[]>([]);
-
-  // 🔐 Validar sesión + obtener perfil
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    const fetchPerfil = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/api/auth/perfil", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await res.json();
-        setUser(data.user);
-      } catch (error) {
-        console.error("Error al obtener perfil:", error);
-      }
-    };
-
-    fetchPerfil();
-  }, [navigate]);
-
   return (
-    <div className="home-container">
+    <div className="patient-home-page">
 
-      {/* 🔥 HEADER */}
-
-      <header className="home-header">
-        <h1>
-          ¡Bienvenido, {user?.username || "Usuario"}! 👋
-        </h1>
-        <p className="home-subtitle">
-          Esto es lo que sucede con tu salud hoy.
-        </p>
-      </header>
-
-      <div className="dashboard-wrapper">
-        <div className="home-grid">
-
-          {/* 📅 CITAS */}
-          <section className="home-card">
-            <h3 className="home-card-title">Próximas Citas</h3>
-
-            {proximasCitas.length === 0 ? (
-              <p>No tienes citas programadas</p>
-            ) : (
-              proximasCitas.map((cita) => (
-                <div key={cita.id} className="appointment-item">
-                  <div className="date-badge">
-                    <span className="date-day">
-                      {cita.fecha.split("-")[2]}
-                    </span>
-                    <span className="date-month">Mes</span>
-                  </div>
-
-                  <div>
-                    <p className="appointment-doctor">{cita.doctor}</p>
-                    <p className="appointment-detail">
-                      {cita.especialidad} • {cita.hora}
-                    </p>
-                  </div>
-                </div>
-              ))
-            )}
-
-            <button className="button-secondary">
-              Ver historial completo
-            </button>
-          </section>
-
-          {/* 📊 MÉTRICAS */}
-          <section className="home-card">
-            <h3 className="home-card-title">Últimas métricas</h3>
-
-            <div className="metrics-grid">
-              <div className="metric">
-                <span>❤️</span>
-                <p className="metric-label">Ritmo Cardíaco</p>
-                <p className="metric-value">72 bpm</p>
-              </div>
-
-              <div className="metric">
-                <span>🩸</span>
-                <p className="metric-label">Glucosa</p>
-                <p className="metric-value">95 mg/dL</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ⚡ ACCIONES */}
-          <section className="home-card full-width">
-            <h3 className="home-card-title">¿Qué necesitas hacer?</h3>
-
-            <div className="action-buttons">
-              <Link to="/crearcita" className="hero_btn">
-                Agendar Cita
-              </Link>
-            </div>
-          </section>
-
+      <section className="patient-home-hero">
+        <div className="patient-home-hero-icon">
+          <span>♙</span>
         </div>
-      </div>
+
+        <div>
+          <h1>¡Bienvenido, Marcos!</h1>
+          <p>
+            Gestiona tus citas, expediente médico y perfil personal desde este panel.
+          </p>
+        </div>
+      </section>
+
+      <section className="patient-home-stats">
+        <div className="patient-stat-card">
+          <div className="patient-stat-icon">▣</div>
+          <div>
+            <span>Próximas citas</span>
+            <h2>2</h2>
+            <p>Citas programadas</p>
+          </div>
+        </div>
+
+        <div className="patient-stat-card">
+          <div className="patient-stat-icon">▤</div>
+          <div>
+            <span>Exámenes registrados</span>
+            <h2>5</h2>
+            <p>Historial de exámenes</p>
+          </div>
+        </div>
+
+        <div className="patient-stat-card">
+          <div className="patient-stat-icon">♙</div>
+          <div>
+            <span>Estado del perfil</span>
+            <h2>Completo</h2>
+            <p>Información actualizada</p>
+          </div>
+        </div>
+
+        <div className="patient-stat-card">
+          <div className="patient-stat-icon">◷</div>
+          <div>
+            <span>Última actualización</span>
+            <h2>Hoy</h2>
+            <p>Información reciente</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="patient-home-main-grid">
+
+        <div className="patient-appointments-card">
+          <div className="patient-card-header">
+            <div className="patient-card-title">
+              <span>▣</span>
+              <h2>Próximas Citas</h2>
+            </div>
+
+            <Link to="/calendariopasiente" className="patient-card-link">
+              Ver todas
+              <span>›</span>
+            </Link>
+          </div>
+
+          <div className="patient-appointments-list">
+            {proximasCitas.map((cita) => (
+              <article className="patient-appointment-item" key={cita.dia}>
+                <div className="patient-appointment-date">
+                  <strong>{cita.dia}</strong>
+                  <span>{cita.mes}</span>
+                </div>
+
+                <div className="patient-appointment-info">
+                  <h3>{cita.doctor}</h3>
+                  <p>{cita.especialidad}</p>
+                  <span>◷ {cita.hora}</span>
+                </div>
+
+                <div
+                  className={
+                    cita.estado === "Confirmada"
+                      ? "patient-appointment-status confirmed"
+                      : "patient-appointment-status pending"
+                  }
+                >
+                  {cita.estado}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <Link to="/calendariopasiente" className="patient-outline-button">
+            Ver historial completo
+            <span>›</span>
+          </Link>
+        </div>
+
+        <div className="patient-summary-card">
+          <div className="patient-card-title">
+            <span>♙</span>
+            <h2>Resumen del Paciente</h2>
+          </div>
+
+          <div className="patient-summary-grid">
+            <div className="patient-summary-item">
+              <div className="summary-mini-icon">▣</div>
+              <div>
+                <h3>1</h3>
+                <p>Próxima cita programada</p>
+              </div>
+            </div>
+
+            <div className="patient-summary-item">
+              <div className="summary-mini-icon">▤</div>
+              <div>
+                <h3>5</h3>
+                <p>Exámenes registrados</p>
+              </div>
+            </div>
+
+            <div className="patient-summary-item">
+              <div className="summary-mini-icon">◇</div>
+              <div>
+                <h3>Completo</h3>
+                <p>Perfil completo</p>
+              </div>
+            </div>
+
+            <div className="patient-summary-item">
+              <div className="summary-mini-icon">♡</div>
+              <div>
+                <h3>Activo</h3>
+                <p>Paciente activo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section className="patient-actions-card">
+        <div className="patient-card-title">
+          <span>↯</span>
+          <h2>Acciones rápidas</h2>
+        </div>
+
+        <div className="patient-actions-grid">
+          <Link to="/crearcita" className="patient-action-button">
+            <span>▣</span>
+            Agendar Cita
+          </Link>
+
+          <Link to="/calendariopasiente" className="patient-action-button">
+            <span>▣</span>
+            Ver Calendario
+          </Link>
+
+          <Link to="/expedientepasiente" className="patient-action-button">
+            <span>▤</span>
+            Mi Expediente
+          </Link>
+
+          <Link to="/perfilpasiente" className="patient-action-button">
+            <span>♙</span>
+            Mi Perfil
+          </Link>
+        </div>
+      </section>
+
+      <section className="patient-home-note">
+        <div className="note-icon">i</div>
+        <p>
+          Recuerda mantener tu información personal y médica actualizada para una mejor atención.
+        </p>
+      </section>
+
     </div>
   );
 }

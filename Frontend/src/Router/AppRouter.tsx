@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+
 import Landing from '../Pages/Landing/landing'
 import Contactos from "../Pages/Landing/contactos";
 import Login from '../Pages/Login/login'
@@ -24,7 +25,9 @@ import VistaPagoCita from "../Pages/PagesSecretaria/pagoCita/vistaPagocita";
 
 /* importaciones de pasiente*/
 import HomePasiente from "../Pages/PagesPasiente/HomePasiente/homepasiente";
-
+import CalendarioPasiente from "../Pages/PagesPasiente/CalendarioPasiente/CalendarioPasiente";
+import ExpedientePasiente from "../Pages/PagesPasiente/ExpedientePasiente/ExpedientePasiente";
+import PerfilPasiente from "../Pages/PagesPasiente/PerfilPasiente/PerfilPasiente";
 import CrearCita from "../Pages/PagesPasiente/Crearcita/crearcita";
 
 /** importaciones de doctor */
@@ -73,9 +76,11 @@ return(
 
 <Route element={<LayoutPasiente></LayoutPasiente>}>
 
+<Route path="/calendariopasiente" element={<CalendarioPasiente></CalendarioPasiente>}></Route>
 <Route path="/homepasiente" element={<HomePasiente></HomePasiente>}></Route>
 <Route path="/crearcita" element={<CrearCita></CrearCita>}></Route>
-
+<Route path="/perfilpasiente" element={<PerfilPasiente></PerfilPasiente>}></Route>
+<Route path="/expedientepasiente" element={<ExpedientePasiente></ExpedientePasiente>}></Route>
 </Route>
 
 <Route element={<LayoutDoctor></LayoutDoctor>}>
