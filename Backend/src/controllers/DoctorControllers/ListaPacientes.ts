@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { obtenerPacientes, obtenerPacientePorId, actualizarObservacionesPaciente} from "../../services/DoctorServices/ListaPacientes";
+import { obtenerPacientes, obtenerPacientePorId, actualizarObservacionesPaciente} from "../../services/DoctorServices/ListaPacientes.js";
 
 export const getPacientes = async (req: Request, res: Response) => {
   try {

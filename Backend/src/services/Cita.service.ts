@@ -1,5 +1,5 @@
-import { prisma } from "../services/prisma";
-import { CitaCreateInput } from "../schemas/Cita.schema";
+import { prisma } from "../services/prisma.js";
+import { CitaCreateInput } from "../schemas/Cita.schema.js";
 
 export class CitaService {
   static async create(data: CitaCreateInput, idUsuario: number) {

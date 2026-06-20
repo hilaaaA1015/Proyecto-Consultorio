@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { createPatientSchema } from "../../schemas/PacienteSchemas/registrarpaciente.schema";
-import { createPatientService } from "../../services/PacienteServices/registrarpaciente.service";
+import { createPatientSchema } from "../../schemas/PacienteSchemas/registrarpaciente.schema.js";
+import { createPatientService } from "../../services/PacienteServices/registrarpaciente.service.js";
 
 export const createPatientController = async (req: Request, res: Response) => {
   try {

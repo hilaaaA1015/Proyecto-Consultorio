@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { loginSchema } from "../schemas/Auth.schema";
-import { loginService } from "../services/Auth.service";
+import { loginSchema } from "../schemas/Auth.schema.js";
+import { loginService } from "../services/Auth.service.js";
 
 export const loginController = async (req: Request, res: Response) => {
   try {

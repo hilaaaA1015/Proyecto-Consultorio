@@ -1,7 +1,7 @@
 // src/controllers/UsuarioGeneral.controller.ts
 import { Request, Response } from "express";
-import { usuarioGeneralRegisterSchema } from "../schemas/UsuarioGeneral.schema";
-import { UsuarioGeneralService } from "../services/UsuarioGeneral.service";
+import { usuarioGeneralRegisterSchema } from "../schemas/UsuarioGeneral.schema.js";
+import { UsuarioGeneralService } from "../services/UsuarioGeneral.service.js";
 
 export class UsuarioGeneralController {
   static async register(req: Request, res: Response) {

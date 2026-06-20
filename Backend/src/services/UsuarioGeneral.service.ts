@@ -1,7 +1,9 @@
-import { prisma } from "../services/prisma";
-import { feistelEncrypt } from "../utils/feistel";
-import { caesarEncrypt } from "../utils/caesar";
-import { UsuarioGeneralRegisterInput } from "../schemas/UsuarioGeneral.schema";
+import { prisma } from "../services/prisma.js";
+import { feistelEncrypt } from "../utils/feistel.js";
+import { caesarEncrypt } from "../utils/caesar.js";
+import { UsuarioGeneralRegisterInput } from "../schemas/UsuarioGeneral.schema.js";
+// 1. Importamos Prisma para obtener el tipo correcto
+import { Prisma } from "@prisma/client"; 
 
 export class UsuarioGeneralService {
   static async register(data: UsuarioGeneralRegisterInput) {
@@ -26,15 +28,16 @@ export class UsuarioGeneralService {
     }
 
     // Cifrado Feistel
-     const key = process.env.FEISTEL_KEY || "dev_key";
+    const key = process.env.FEISTEL_KEY || "dev_key";
     const encryptedPassword = feistelEncrypt(data.password, key);
     
     // Cifrado Cesar
-     const caesarShift = Number(process.env.CAESAR_SHIFT ?? "3");
+    const caesarShift = Number(process.env.CAESAR_SHIFT ?? "3");
     const finalCipher = caesarEncrypt(encryptedPassword, caesarShift);
 
     // Transacción: crear usuario + tabla por rol
-    const result = await prisma.$transaction(async (tx) => {
+    // 2. Le asignamos el tipo explicito Prisma.TransactionClient a tx
+    const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // Crear usuario base
       const nuevoUsuario = await tx.usuario.create({
         data: {

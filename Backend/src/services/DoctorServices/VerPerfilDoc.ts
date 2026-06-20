@@ -1,4 +1,4 @@
-import { prisma } from "../prisma";
+import { prisma } from "../prisma.js";
 
 export const getDoctorProfileService = async (id_usuario: number) => {
   const userId = Number(id_usuario);

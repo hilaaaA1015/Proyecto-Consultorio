@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import {
   getDoctorProfileService,
   updateDoctorProfileService,
-} from "../../services/DoctorServices/VerPerfilDoc";
-import { updateDoctorSchema } from "../../schemas/DoctorSchemas/VerPerfilDoc";
+} from "../../services/DoctorServices/VerPerfilDoc.js";
+import { updateDoctorSchema } from "../../schemas/DoctorSchemas/VerPerfilDoc.js";
 
 export const getDoctorProfile = async (req: any, res: Response) => {
   try {

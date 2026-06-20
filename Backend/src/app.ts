@@ -13,21 +13,21 @@ app.use(
 
 app.use(express.json());
 
-import patientsRoutes from "./routes/PacienteRoutes/registrarpaciente.routes";
+import patientsRoutes from "./routes/PacienteRoutes/registrarpaciente.routes.js";
 app.use("/api/patients", patientsRoutes);
 app.get("/api/patients", (_, res) => {
   res.json({ status: "ok" });
 });
 console.log("rutas registradas");
 
-import authRoutes from "./routes/Auth.routes";
+import authRoutes from "./routes/Auth.routes.js";
 app.use("/api/auth", authRoutes);
 app.get("/api/auth", (_, res) => {
   res.json({ status: "Funcionando..." });
 });
 
-import doctorRouter from "./routes/DoctorRoutes/VerPerfilDoc";
+import doctorRouter from "./routes/DoctorRoutes/VerPerfilDoc.js";
 app.use("/api/doctorperfil", doctorRouter);
 
-import pacienteRoutes from "./routes/DoctorRoutes/ListaPaciente";
+import pacienteRoutes from "./routes/DoctorRoutes/ListaPaciente.js";
 app.use("/api/listapacientes", pacienteRoutes);

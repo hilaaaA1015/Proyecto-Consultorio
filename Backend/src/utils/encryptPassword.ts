@@ -1,6 +1,6 @@
-import { caesarEncrypt } from "./caesar";
-import { feistelEncrypt } from "./feistel";
-import { ENV } from "../config/env";
+import { caesarEncrypt } from "./caesar.js";
+import { feistelEncrypt } from "./feistel.js";
+import { ENV } from "../config/env.js";
 
 export const encryptPassword = (password: string) => {
   const caesar = caesarEncrypt(password, ENV.ENCRYPT_SHIFT);

@@ -2,9 +2,9 @@ import { Router } from "express";
 import {
   getDoctorProfile,
   updateDoctorProfileController,
-} from "../../controllers/DoctorControllers/VerPerfilDoc";
+} from "../../controllers/DoctorControllers/VerPerfilDoc.js";
 
-import { authMiddleware } from "../../middlewares/auth.middleware";
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 

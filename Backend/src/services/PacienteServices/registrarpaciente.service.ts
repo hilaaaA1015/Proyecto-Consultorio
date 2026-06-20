@@ -1,11 +1,14 @@
-import { prisma } from "../prisma";
-import { encryptPassword } from "../../utils/encryptPassword";
+import { prisma } from "../prisma.js";
+import { encryptPassword } from "../../utils/encryptPassword.js";
+// 1. Importamos Prisma para acceder a sus tipos de datos
+import { Prisma } from "@prisma/client"; 
 
 export const createPatientService = async (data: any) => {
 
   const encryptedPassword = encryptPassword(data.password);
 
-  return await prisma.$transaction(async (tx) => {
+  // 2. Le asignamos el tipo Prisma.TransactionClient a tx
+  return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 
     const existingUser = await tx.usuario.findUnique({
       where: {
@@ -16,7 +19,7 @@ export const createPatientService = async (data: any) => {
       throw new Error("El usuario ya existe");
     }
 
-    //  1. Crear usuario
+    // 1. Crear usuario
     const newUser = await tx.usuario.create({
       data: {
         nomperfil: data.UsuarioPasiente,

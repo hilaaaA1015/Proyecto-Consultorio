@@ -1,7 +1,7 @@
-import { prisma } from "../services/prisma";
-import { encryptPassword } from "../utils/encryptPassword";
+import { prisma } from "../services/prisma.js";
+import { encryptPassword } from "../utils/encryptPassword.js";
 import jwt from "jsonwebtoken";
-import { ENV } from "../config/env";
+import { ENV } from "../config/env.js";
 
 export const loginService = async (data: any) => {
 

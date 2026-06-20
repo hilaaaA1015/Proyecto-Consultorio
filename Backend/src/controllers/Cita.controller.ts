@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CitaService } from "../services/Cita.service";
+import { CitaService } from "../services/Cita.service.js";
 
 export class CitaController {
   static async create(req: Request, res: Response) {
