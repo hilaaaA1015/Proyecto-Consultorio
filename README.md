@@ -16,7 +16,7 @@ Sistema de gestión para consultorio médico.
 cd backend -> (esto abre la carpeta del backend)
 npm install -> (esto instala las cosas necesarias)
 ## Correr Backend
-pnpm dev
+npm run dev
 
 ### Frontend
 cd frontend -> (esto abre la carpeta del frontend)
