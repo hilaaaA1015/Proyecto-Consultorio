@@ -58,45 +58,93 @@ export default function Hero() {
   <div className="slide-track">
 
     <div className="condition-card">
-      <h3>🤒 Fiebre o gripe</h3>
-      <p>Tratamiento para infecciones respiratorias.</p>
-    </div>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/2966/2966486.png"
+    alt="Fiebre"
+  />
 
-    <div className="condition-card">
-      <h3>🤕 Dolor de cabeza</h3>
-      <p>Evaluación médica.</p>
-    </div>
+  <h3>Fiebre o gripe</h3>
 
-    <div className="condition-card">
-      <h3>🤧 Alergias</h3>
-      <p>Tratamiento para alergias.</p>
-    </div>
+  <p>Tratamiento para infecciones respiratorias.</p>
+</div>
 
-    <div className="condition-card">
-      <h3>🩺 Chequeos</h3>
-      <p>Consultas preventivas.</p>
-    </div>
+<div className="condition-card">
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+    alt="Dolor de cabeza"
+  />
+
+  <h3>Dolor de cabeza</h3>
+
+  <p>Evaluación médica.</p>
+</div>
+
+<div className="condition-card">
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png"
+    alt="Alergias"
+  />
+
+  <h3>Alergias</h3>
+
+  <p>Tratamiento para alergias.</p>
+</div>
+
+<div className="condition-card">
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png"
+    alt="Chequeos"
+  />
+
+  <h3>Chequeos preventivos</h3>
+
+  <p>Consultas preventivas.</p>
+</div>
 
     {/* duplicados para loop infinito */}
     <div className="condition-card">
-      <h3>🤒 Fiebre o gripe</h3>
-      <p>Tratamiento para infecciones respiratorias.</p>
-    </div>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/2966/2966486.png"
+    alt="Fiebre"
+  />
 
-    <div className="condition-card">
-      <h3>🤕 Dolor de cabeza</h3>
-      <p>Evaluación médica.</p>
-    </div>
+  <h3>Fiebre o gripe</h3>
 
-    <div className="condition-card">
-      <h3>🤧 Alergias</h3>
-      <p>Tratamiento para alergias.</p>
-    </div>
+  <p>Tratamiento para infecciones respiratorias.</p>
+</div>
 
-    <div className="condition-card">
-      <h3>🩺 Chequeos</h3>
-      <p>Consultas preventivas.</p>
-    </div>
+<div className="condition-card">
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+    alt="Dolor de cabeza"
+  />
+
+  <h3>Dolor de cabeza</h3>
+
+  <p>Evaluación médica.</p>
+</div>
+
+<div className="condition-card">
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png"
+    alt="Alergias"
+  />
+
+  <h3>Alergias</h3>
+
+  <p>Tratamiento para alergias.</p>
+</div>
+
+<div className="condition-card">
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png"
+    alt="Chequeos"
+  />
+
+  <h3>Chequeos preventivos</h3>
+
+  <p>Consultas preventivas.</p>
+</div>
 
   </div>
 </div>

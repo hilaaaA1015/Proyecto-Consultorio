@@ -17,6 +17,7 @@ body{
   background: var(--bg);
   color: var(--text);
   line-height:1.5;
+  background-color: #F8F9FA;
 }
 
 /* SECCIONES */
@@ -169,6 +170,31 @@ section{
 .doctor-card:hover{
   transform: translateY(-8px);
   box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+.condition-card {
+  text-align: center;
+  border-top: 4px solid #0ea37f;
+}
+
+.condition-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 18px;
+}
+
+.condition-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+.condition-card p {
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 14px;
 }
 
 .icon{

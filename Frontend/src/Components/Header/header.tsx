@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
-{/*import imagen from "../../../public/Imagenes/logo_regina.png"*/}
+import imagen from "../../public/Imagenes/logo_regina.png"
 
 export default function Header() {
   return (
     <header className="header">
       <Link to="/" className="header__left">
         <img
-          src="../../../public/Imagenes/logo_regina.png"
+          src="../../public/Imagenes/logo_regina.png"
           alt="Logo consultorio"
           className="header__logo"
         />

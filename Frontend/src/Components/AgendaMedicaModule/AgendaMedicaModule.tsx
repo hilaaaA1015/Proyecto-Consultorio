@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import {
   format,
   parse,
   startOfWeek,
   getDay,
+  addMinutes,
+  isBefore,
+  isWeekend,
 } from "date-fns";
 import { es } from "date-fns/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./AgendaMedicaModule.css";
+
 
 const localizer = dateFnsLocalizer({
   format,
@@ -18,44 +22,130 @@ const localizer = dateFnsLocalizer({
   locales: { es },
 });
 
-const AgendaMedicaModule = () => {
-  const [citasBackend, setCitasBackend] = useState<any[]>([]);
+const HORARIOS = ["08:00","08:45","09:30","10:15","11:00","11:45","12:30"];
+
+type EstadoCita = "Pendiente" | "Confirmada" | "Completada" | "Cancelada";
+
+export interface Cita {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+  paciente: string;
+  servicio: string;
+  estado: EstadoCita;
+}
+
+interface Props {
+  citasExternas?: Cita[];
+  onCrearCita?: (cita: Cita) => void;
+}
+
+const AgendaMedicaModule: React.FC<Props> = ({
+  citasExternas = [],
+  onCrearCita,
+}) => {
+
+  const [citas, setCitas] = useState<Cita[]>(citasExternas);
+
   const [fechaActual, setFechaActual] = useState(new Date());
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [citaSeleccionada, setCitaSeleccionada] = useState<any>(null);
-  const [estadoSeleccionado, setEstadoSeleccionado] = useState("");
-
-  const cargarCitas = () => {
-    fetch("http://localhost:3001/api/citas")
-      .then((res) => res.json())
-      .then((data) => setCitasBackend(data));
-  };
-
-  useEffect(() => {
-    cargarCitas();
-  }, []);
-
-  const eventos = citasBackend.map((c) => {
-    const fecha = new Date(c.fecha);
-    const [hh, mm] = c.hora.split(":").map(Number);
-
-    const start = new Date(fecha);
-    start.setHours(hh, mm, 0, 0);
-
-    const end = new Date(start.getTime() + 35 * 60000);
-
-    return {
-      id: c.id_cita,
-      title: `${c.motivo} (${c.estado})`,
-      start,
-      end,
-      estado: c.estado,
-    };
+  const [modal, setModal] = useState({
+    open: false,
+    message: "",
+    type: "error",
   });
 
-  const eventStyleGetter = (event: any) => {
-    const colors: any = {
+  const [form, setForm] = useState({
+    paciente: "",
+    servicio: "",
+    fecha: "",
+    horaInicio: "",
+    horaFin: "",
+  });
+
+  // 📅 seleccionar día
+  const handleSelectSlot = ({ start }: { start: Date }) => {
+    if (isWeekend(start)) {
+  return setModal({
+    open: true,
+    message: "No se pueden agendar citas los fines de semana.",
+    type: "error",
+  });
+}
+
+if (isBefore(start, new Date())) {
+    return setModal({
+      open: true,
+      message: "No puedes seleccionar fechas anteriores al día actual.",
+      type: "error",
+    });
+  }
+
+    setForm({
+      ...form,
+      fecha: format(start, "yyyy-MM-dd"),
+    });
+  };
+
+  // ➕ agregar cita
+  const agregarCita = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const start = new Date(`${form.fecha}T${form.horaInicio}`);
+    const end = addMinutes(start, 35);
+
+    if (isBefore(start, new Date())) {
+  return setModal({
+    open: true,
+    message: "La fecha seleccionada no es válida.",
+    type: "error",
+  });
+}
+    const existe = citas.find(
+      (c) =>
+        format(c.start, "yyyy-MM-dd") === form.fecha &&
+        format(c.start, "HH:mm") === form.horaInicio
+    );
+
+   if (existe) {
+  return setModal({
+    open: true,
+    message: "El horario seleccionado ya está ocupado.",
+    type: "error",
+  });
+}
+
+    const nueva: Cita = {
+      id: Date.now().toString(),
+      title: `${form.paciente} - ${form.servicio}`,
+      start,
+      end,
+      paciente: form.paciente,
+      servicio: form.servicio,
+      estado: "Pendiente",
+    };
+
+    setCitas([...citas, nueva]);
+    setModal({
+  open: true,
+  message: "Cita agendada correctamente.",
+  type: "success",
+});
+    onCrearCita && onCrearCita(nueva);
+
+    setForm({
+      paciente: "",
+      servicio: "",
+      fecha: "",
+      horaInicio: "",
+      horaFin: "",
+    });
+  };
+
+  // 🎨 colores por estado
+  const eventStyleGetter = (event: Cita) => {
+    const colores = {
       Pendiente: "#f59e0b",
       Confirmada: "#2563eb",
       Completada: "#16a34a",
@@ -64,95 +154,171 @@ const AgendaMedicaModule = () => {
 
     return {
       style: {
-        backgroundColor: colors[event.estado],
-        color: "white",
+        backgroundColor: colores[event.estado],
         borderRadius: "8px",
+        color: "white",
         border: "none",
       },
     };
   };
 
-  // ======================
-  // ABRIR MODAL
-  // ======================
-  const onSelectEvent = (event: any) => {
-    setCitaSeleccionada(event);
-    setEstadoSeleccionado(event.estado);
-    setModalOpen(true);
-  };
-
-  // ======================
-  // CAMBIAR ESTADO
-  // ======================
-  const cambiarEstado = async () => {
-    await fetch(
-      `http://localhost:3001/api/citas/${citaSeleccionada.id}/estado`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ estado: estadoSeleccionado }),
-      }
-    );
-
-    setModalOpen(false);
-    setCitaSeleccionada(null);
-    cargarCitas();
-  };
-
   return (
     <div className="agendaModuleRoot">
 
-      <div className="agendaCalendar">
-        <Calendar
-          localizer={localizer}
-          events={eventos}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 550 }}
-          culture="es"
-          eventPropGetter={eventStyleGetter}
-          onSelectEvent={onSelectEvent}
-          date={fechaActual}
-          onNavigate={setFechaActual}
-          views={["month", "week", "day"]}
-        />
-      </div>
+      <div className="agendaLayout">
 
-      {/* ======================
-          MODAL
-      ====================== */}
-      {modalOpen && citaSeleccionada && (
-        <div className="modalOverlay">
-          <div className="modalContent">
-
-            <h3>Actualizar Cita</h3>
-
-            <p><b>Motivo:</b> {citaSeleccionada.title}</p>
-
-            <select
-              value={estadoSeleccionado}
-              onChange={(e) => setEstadoSeleccionado(e.target.value)}
-            >
-              <option value="Pendiente">Pendiente</option>
-              <option value="Confirmada">Confirmada</option>
-              <option value="Completada">Completada</option>
-              <option value="Cancelada">Cancelada</option>
-            </select>
-
-            <div style={{ marginTop: 15 }}>
-              <button onClick={cambiarEstado}>Guardar</button>
-              <button
-                onClick={() => setModalOpen(false)}
-                style={{ marginLeft: 10 }}
-              >
-                Cancelar
-              </button>
-            </div>
-
-          </div>
+        {/* CALENDARIO */}
+        <div className="agendaCalendar">
+          <Calendar
+            localizer={localizer}
+            events={citas}
+            startAccessor="start"
+            endAccessor="end"
+            selectable
+            onSelectSlot={handleSelectSlot}
+            eventPropGetter={eventStyleGetter}
+            date={fechaActual}
+            onNavigate={setFechaActual}
+            views={["month", "week", "day"]}
+            style={{ height: 550 }}
+            culture="es"
+          />
         </div>
-      )}
 
+        {/* FORM */}
+        <div className="agendaForm">
+          <h3>Nueva Cita</h3>
+
+          <form onSubmit={agregarCita}>
+
+  <div className="formGroup">
+  <label>Paciente</label>
+
+  <div className="searchInput">
+
+    <input
+      type="text"
+      placeholder="Buscar paciente..."
+      value={form.paciente}
+      onChange={(e) =>
+        setForm({ ...form, paciente: e.target.value })
+      }
+      required
+    />
+
+    <button
+  type="button"
+  className="searchBtn"
+  onClick={() => {
+    console.log("Buscar paciente");
+  }}
+>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/13/13311.png"
+    alt="Buscar"
+  />
+</button>
+
+  </div>
+</div>
+
+  <div className="formGroup">
+    <label>Servicio Médico</label>
+    <select
+      value={form.servicio}
+      onChange={(e) =>
+        setForm({ ...form, servicio: e.target.value })
+      }
+      required
+    >
+      <option value="">Seleccione un servicio</option>
+      <option>Consulta médica</option>
+      <option>Chequeo</option>
+    </select>
+  </div>
+
+  <div className="formGroup">
+  <label>Fecha de la cita</label>
+
+  <input
+    type="date"
+    value={form.fecha}
+    readOnly
+  />
+
+  <small className="calendarHint">
+    Seleccione una fecha haciendo clic en el calendario
+  </small>
+</div>
+
+  <div className="formGroup">
+    <label>Hora de inicio</label>
+    <select
+      value={form.horaInicio}
+      onChange={(e) => {
+        const inicio = e.target.value;
+        const temp = new Date();
+        const [h, m] = inicio.split(":");
+
+        temp.setHours(+h, +m);
+
+        setForm({
+          ...form,
+          horaInicio: inicio,
+          horaFin: format(addMinutes(temp, 35), "HH:mm"),
+        });
+      }}
+      required
+    >
+      <option value="">Seleccione hora</option>
+
+      {HORARIOS.map((h) => (
+        <option key={h}>{h}</option>
+      ))}
+    </select>
+  </div>
+
+  <div className="formGroup">
+    <label>Hora de finalización</label>
+    <input
+      type="time"
+      value={form.horaFin}
+      readOnly
+    />
+  </div>
+
+  <button type="submit">
+    Agendar
+  </button>
+
+</form>
+        </div>
+
+      </div>
+      {modal.open && (
+  <div className="modalOverlay">
+    <div className={`modalBox ${modal.type}`}>
+      <h3>
+        {modal.type === "success"
+          ? "✅ Operación exitosa"
+          : "⚠️ Atención"}
+      </h3>
+
+      <p>{modal.message}</p>
+
+      <button
+        onClick={() =>
+          setModal({
+            ...modal,
+            open: false,
+          })
+        }
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };
